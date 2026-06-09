@@ -6,7 +6,8 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
   const [loading, setLoading] = useState(true);
-  const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+  // /api → Vite proxy ke localhost:4000 (lokal) | Netlify redirect ke function (production)
+  const API_BASE = "/api";
 
   useEffect(() => {
     const savedUser = localStorage.getItem("gymUser");

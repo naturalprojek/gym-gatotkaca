@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { compressImage } from "../logic/imageUtils";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:4000/api";
+// /api → Vite proxy ke localhost:4000 (lokal) | Netlify redirect ke function (production)
+const API_BASE = "/api";
 
 const Album = () => {
   const { user } = useContext(AuthContext);

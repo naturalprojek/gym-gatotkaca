@@ -4,7 +4,8 @@ import { AuthContext } from '../context/AuthContext';
 import foto1 from '../../disen/foto1.JPG';
 import foto2 from '../../disen/foto2.JPG';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
+// /api → Vite proxy ke localhost:4000 (lokal) | Netlify redirect ke function (production)
+const API_BASE = "/api";
 
 const Home = () => {
   const { user } = useContext(AuthContext);
