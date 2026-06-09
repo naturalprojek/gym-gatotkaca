@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gatotkaca Gym - Bangun Tubuh Seperti Dewa!</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ff6b35;
+            text-decoration: none;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: #ff6b35;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                        url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800"><rect fill="%23000000" width="1200" height="800"/><path fill="%23ff6b35" opacity="0.1" d="M0 400Q300 200 600 400T1200 400V800H0z"/><path fill="%23ffd23f" opacity="0.05" d="M0 200Q400 0 800 200T1200 200V400H0z"/></svg>');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero-content p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b35, #f7931e);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease 0.4s both;
+            box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(255, 107, 53, 0.6);
+        }
+
+        /* Sections */
+        .section {
+            padding: 5rem 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+
+        .section-title i {
+            color: #ff6b35;
+            margin-right: 1rem;
+        }
+
+        /* Features */
+        .features {
+            background: #f8f9fa;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .feature-icon {
+            font-size: 3rem;
+            color: #ff6b35;
+            margin-bottom: 1rem;
+        }
+
+        /* Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .gallery-item {
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 15px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.4);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover::before {
+            opacity: 1;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+
+        /* Pricing */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .pricing-card {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card.featured {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .pricing-card.featured .price {
+            color: #ffd23f;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-15px);
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+
+        .price span {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: linear-gradient(135deg, #ff6b35, #f7931e);
+            color: white;
+            text-align: center;
+        }
+
+        /* Footer */
+        .footer {
+            background: #222;
+            color: white;
+            text-align: center;
+            padding: 3rem 0 1rem;
+        }
+
+        .social-links {
+            margin: 2rem 0;
+        }
+
+        .social-links a {
+            color: white;
+            font-size: 1.5rem;
+            margin: 0 1rem;
+            transition: color 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: #ff6b35;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hamburger {
+                display: flex;
+            }
+
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 70px;
+                flex-direction: column;
+                background-color: #000;
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                padding: 2rem 0;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+        }
+
+        /* Scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <i class="fas fa-dumbbell"></i> Gatotkaca Gym
+            </a>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Fasilitas</a></li>
+                <li><a href="#gallery">Galeri</a></li>
+                <li><a href="#pricing">Harga</a></li>
+                <li><a href="#contact">Kontak</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1><i class="fas fa-fire"></i> Gatotkaca Gym</h1>
+            <p>Bangun Tubuh Seperti Dewa Gatotkaca!<br>Transformasi Total Dimulai Sekarang!</p>
+            <a href="#contact" class="cta-button">
+                <i class="fas fa-dumbbell"></i> DAFTAR SEKARANG
+            </a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-star"></i> Fasilitas Kelas Dewa
+            </h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-dumbbell"></i>
+                    </div>
+                    <h3>Alat Modern</h3>
+                    <p>Perlengkapan gym terlengkap dengan teknologi terkini, beban hingga 300kg!</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Trainer Bersertifikat</h3>
+                    <p>Trainer berpengalaman siap bimbing Anda capai target body goals</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>24 Jam</h3>
+                    <p>Gym buka 24/7, latihan kapan saja sesuai jadwal Anda</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shower"></i>
+                    </div>
+                    <h3>Fasilitas Lengkap</h3>
+                    <p>Kamar mandi, sauna, locker, dan area istirahat premium</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3>Kelas Grup</h3>
+                    <p>HIIT, Yoga, Boxing, dan Zumba untuk variasi latihan</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-utensils"></i>
+                    </div>
+                    <h3>Nutrition Corner</h3>
+                    <p>Suplemen, protein shake, dan konsultasi nutrisi tersedia</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="section">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-images"></i> Galeri Gatotkaca Gym
+            </h2>
+            <div class="gallery-grid">
+                <div class="gallery-item" style="background-image: linear-gradient(45deg, #ff6b35, #667eea);"></div>
+                <div class="gallery-item" style="background-image: linear-gradient(45deg, #f093fb, #f5576c);"></div>
+                <div class="gallery-item" style="background-image: linear-gradient(45deg, #4facfe, #00f2fe);"></div>
+                <div class="gallery-item" style="background-image: linear-gradient(45deg, #43e97b, #38f9d7);"></div>
+                <div class="gallery-item" style="background-image: linear-gradient(45deg, #fa709a, #fee140);"></div>
+                <div class="gallery-item" style="background-image: linear-gradient(45deg, #a8edea, #fed6e3);"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="section" style="background: #f8f9fa;">
+        <div class="container">
+            <h2 class="section-title">
+                <i class="fas fa-tags"></i> Pilih Paket Anda
+            </h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Basic Warrior</h3>
+                    <div class="price">Rp 150.000<span>/bulan</span></div>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><i class="fas fa-check" style="color: #43e97b;"></i> Akses 24 Jam</li>
+                        <li><i class="fas fa-check" style="color: #43e97b;"></i> Free Locker</li>
+                        <li><i class="fas fa-check" style="color: #43e97b;"></i> 1x Konsultasi</li>
+                    </ul>
+                    <a href="#contact" class="cta-button" style="margin-top: 2rem; display: inline-block;">Pilih Paket</a>
+                </div>
+                <div class="pricing-card featured">
+                    <h3><i class="fas fa-crown" style="color: #ffd23f;"></i> Gatotkaca Pro</h3>
+                    <div class="price">Rp 299.000<span>/bulan</span></div>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><i class="fas fa-check" style="color: #ffd23f;"></i> Semua Fasilitas</li>
+                        <li><i class="fas fa-check" style="color: #ffd23f;"></i> Personal Trainer</li>
+                        <li><i class="fas fa-check" style="color: #ffd23f;"></i> Nutrition Plan</li>
+                        <li><i class="fas fa-check" style="color: #ffd23f;"></i> Kelas Grup Gratis</li>
+                    </ul>
+                    <a href="#contact" class="cta-button" style="margin-top: 2rem; background: #ffd23f; color: #333;">PILIH SEKARANG</a>
+                </div>
+                <div class="pricing-card">
+                    <h3>God Mode</h3>
+                    <div class="price">Rp 499.000<span>/bulan</span></div>
+                    <ul style="list-style: none; padding: 0;">
+                        <li><i class="fas fa-check" style="color: #43e97b;"></i> VIP Treatment</li>
+                        <li><i class="fas fa-check" style="color: #43e97b;"></i> Private Room</li>
+                        <li><i class="fas fa-check" style="color: #43e97b;"></i> Sauna & Massage</li>
+                    </ul>
+                    <a href="#contact" class="cta-button" style="margin-top: 2rem; display: inline-block;">Pilih Paket</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section id="contact" class="cta-section section">
+        <div class="container">
+            <h2 style="font-size: 3rem; margin-bottom: 1rem;">
+                Siap Jadi Gatotkaca Modern?
+            </h2>
+            <p style="font-size: 1.3rem; margin-bottom: 2rem;">
+                Daftar sekarang dan rasakan bedanya!
+            </p>
+            <a href="https://wa.me/6281234567890?text=Saya%20mau%20daftar%20Gatotkaca%20Gym!" class="

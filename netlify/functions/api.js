@@ -1,0 +1,350 @@
+import express from "express";
+import cors from "cors";
+import serverless from "serverless-http";
+import { createClient } from "@supabase/supabase-js";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+
+const app = express();
+const router = express.Router();
+
+// ===== CONFIG =====
+const SUPABASE_URL = process.env.SUPABASE_URL;
+const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+const JWT_SECRET = process.env.JWT_SECRET || "verysecretkey";
+
+app.use(cors({ origin: true, credentials: true }));
+app.use(express.json({ limit: "50mb" }));
+
+// Supabase client with service_role key (bypasses RLS for backend)
+const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY, {
+  auth: { autoRefreshToken: false, persistSession: false },
+});
+
+// ===== ALBUMS =====
+
+router.get("/albums", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("albums")
+      .select("*")
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Gagal mengambil data album." });
+  }
+});
+
+router.post("/albums", async (req, res) => {
+  try {
+    const { url, title } = req.body;
+    if (!url) {
+      return res.status(400).json({ message: "URL foto wajib diisi." });
+    }
+    const { data, error } = await supabase
+      .from("albums")
+      .insert({ url, title: title || null })
+      .select()
+      .single();
+    if (error) throw error;
+    res.status(201).json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Gagal menambahkan album." });
+  }
+});
+
+router.put("/albums/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { url, title } = req.body;
+    if (!url) {
+      return res.status(400).json({ message: "URL foto wajib diisi." });
+    }
+    const { error } = await supabase
+      .from("albums")
+      .update({ url, title: title || null })
+      .eq("id", id);
+    if (error) throw error;
+
+    const { data, error: fetchError } = await supabase
+      .from("albums")
+      .select("*")
+      .eq("id", id)
+      .maybeSingle();
+    if (fetchError) throw fetchError;
+    if (!data) {
+      return res.status(404).json({ message: "Album tidak ditemukan." });
+    }
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Gagal memperbarui album." });
+  }
+});
+
+router.delete("/albums/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { error } = await supabase.from("albums").delete().eq("id", id);
+    if (error) throw error;
+    res.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Gagal menghapus album." });
+  }
+});
+
+// ===== COMMENTS =====
+
+router.get("/comments", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("comments")
+      .select("*")
+      .order("date", { ascending: false });
+    if (error) throw error;
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Gagal mengambil komentar." });
+  }
+});
+
+router.post("/comments", async (req, res) => {
+  try {
+    const { email, text, sentiment } = req.body;
+    if (!email || !text || !sentiment) {
+      return res.status(400).json({ message: "Email, komentar, dan kepuasan wajib diisi." });
+    }
+    const { data, error } = await supabase
+      .from("comments")
+      .insert({ email, text, sentiment, date: new Date().toISOString() })
+      .select()
+      .single();
+    if (error) throw error;
+    res.status(201).json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Gagal menyimpan komentar." });
+  }
+});
+
+router.delete("/comments/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const numId = parseInt(id, 10);
+
+    if (!numId) {
+      return res.status(400).json({ message: "ID komentar tidak valid." });
+    }
+
+    const { data, error } = await supabase
+      .from("comments")
+      .delete()
+      .eq("id", numId)
+      .select();
+
+    if (error) throw error;
+
+    if (!data || data.length === 0) {
+      return res.status(404).json({ message: "Komentar tidak ditemukan." });
+    }
+
+    res.json({ success: true, message: "Komentar berhasil dihapus." });
+  } catch (error) {
+    console.error("Error deleting comment:", error);
+    res.status(500).json({ message: "Gagal menghapus komentar.", error: error.message });
+  }
+});
+
+// ===== AUTH =====
+
+router.post("/auth/register", async (req, res) => {
+  try {
+    const { name, email, password, role } = req.body;
+    if (!name || !email || !password)
+      return res.status(400).json({ message: "Semua field wajib diisi." });
+
+    const { data: existing } = await supabase
+      .from("users")
+      .select("id")
+      .eq("email", email)
+      .limit(1);
+    if (existing && existing.length > 0)
+      return res.status(400).json({ message: "Email sudah terdaftar." });
+
+    const hash = await bcrypt.hash(password, 10);
+    const userRole = role || "user";
+
+    const { data, error } = await supabase
+      .from("users")
+      .insert({ name, email, password_hash: hash, role: userRole })
+      .select("id, name, email, role, created_at")
+      .single();
+    if (error) throw error;
+
+    const user = data;
+    const token = jwt.sign(
+      { id: user.id, email: user.email, role: user.role },
+      JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+    res.status(201).json({ user, token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Gagal mendaftar user." });
+  }
+});
+
+router.post("/auth/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password)
+      return res.status(400).json({ message: "Email dan password wajib diisi." });
+
+    const { data: users, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("email", email)
+      .limit(1);
+    if (error) throw error;
+
+    if (!users || users.length === 0)
+      return res.status(400).json({ message: "Email atau password salah." });
+
+    const user = users[0];
+    const match = await bcrypt.compare(password, user.password_hash);
+    if (!match)
+      return res.status(400).json({ message: "Email atau password salah." });
+
+    const payload = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      name: user.name,
+    };
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "7d" });
+    const safeUser = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    };
+    res.json({ user: safeUser, token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Gagal melakukan login." });
+  }
+});
+
+// ===== USER MANAGEMENT =====
+
+router.get("/users", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from("users")
+      .select("id, name, email, role, created_at")
+      .order("created_at", { ascending: false });
+    if (error) throw error;
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Gagal mengambil data user." });
+  }
+});
+
+router.delete("/users/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { error } = await supabase.from("users").delete().eq("id", id);
+    if (error) throw error;
+    res.json({ success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Gagal menghapus user." });
+  }
+});
+
+router.put("/users/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { role, name, email, password } = req.body;
+
+    const updateData = {};
+
+    if (email) {
+      const { data: existing } = await supabase
+        .from("users")
+        .select("id")
+        .eq("email", email)
+        .neq("id", id)
+        .limit(1);
+      if (existing && existing.length > 0) {
+        return res.status(400).json({ message: "Email sudah digunakan oleh user lain." });
+      }
+      updateData.email = email;
+    }
+
+    if (name) updateData.name = name;
+    if (password) updateData.password_hash = await bcrypt.hash(password, 10);
+    if (role) updateData.role = role;
+
+    if (Object.keys(updateData).length === 0) {
+      return res.status(400).json({ message: "Tidak ada data untuk diubah." });
+    }
+
+    const { data, error } = await supabase
+      .from("users")
+      .update(updateData)
+      .eq("id", id)
+      .select("id, name, email, role, created_at");
+
+    if (error) throw error;
+
+    if (!data || data.length === 0) {
+      return res.status(404).json({ message: "User tidak ditemukan." });
+    }
+
+    res.json(data[0]);
+  } catch (error) {
+    console.error(`[PUT /api/users/${id}] Error:`, error);
+    res.status(500).json({ message: "Gagal mengubah user.", error: error.message });
+  }
+});
+
+// ===== SEED DEFAULT ADMIN =====
+
+async function ensureAdminUser() {
+  const { data: existing } = await supabase
+    .from("users")
+    .select("id")
+    .eq("email", "gatotkaca@gmail.com")
+    .limit(1);
+
+  if (!existing || existing.length === 0) {
+    const hash = await bcrypt.hash("adminmin123", 10);
+    const { error } = await supabase.from("users").insert({
+      name: "admin",
+      email: "gatotkaca@gmail.com",
+      password_hash: hash,
+      role: "admin",
+    });
+    if (error) {
+      console.error("Gagal membuat admin default:", error);
+    } else {
+      console.log("Admin default dibuat: gatotkaca@gmail.com / adminmin123");
+    }
+  }
+}
+
+// Mount all routes under /api
+app.use("/api/", router);
+
+// Seed admin user on cold start (best-effort)
+ensureAdminUser().catch((err) => console.error("Seed admin gagal:", err));
+
+// Export the serverless handler
+export const handler = serverless(app);
