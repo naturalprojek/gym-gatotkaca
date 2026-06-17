@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Windows reserved filenames
+nul
+
 # Environment variables (jangan commit ke git!)
 .env
 .env.local
