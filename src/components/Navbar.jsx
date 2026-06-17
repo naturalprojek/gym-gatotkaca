@@ -225,7 +225,7 @@ const Navbar = () => {
           )}
           <a href="/#maps-kontak" onClick={closeMenu} className="nav-link-item">
             <span className="nav-link-icon">{icons.kontak}</span>
-            Kontak/Maps
+            Kontak & Maps
           </a>
 
           {user && (
