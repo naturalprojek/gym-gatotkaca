@@ -31,7 +31,7 @@ const UserDashboard = () => {
     );
   }
 
-  if (!user || user.role !== 'user') {
+  if (!user) {
     return <Navigate to="/login" replace />;
   }
 
