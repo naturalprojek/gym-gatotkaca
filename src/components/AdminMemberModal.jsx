@@ -66,6 +66,20 @@ const AdminMemberModal = ({
           </div>
 
           <div className="form-group">
+            <label className="form-label">Nomor HP / WhatsApp</label>
+            <input
+              type="tel"
+              className="form-input"
+              value={memberForm.phone || ""}
+              onChange={(e) => handleChange("phone", e.target.value)}
+              placeholder="Contoh: 628123456789"
+            />
+            <small style={{ color: '#5e7caa', fontSize: '0.75rem', marginTop: '0.3rem' }}>
+              Format internasional (62xxx). Untuk tombol WA otomatis.
+            </small>
+          </div>
+
+          <div className="form-group">
             <label className="form-label">
               Password {editingMember ? "(kosongkan jika tidak diubah)" : ""}
             </label>

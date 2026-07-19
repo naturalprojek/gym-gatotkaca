@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  const [identifier, setIdentifier] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -17,7 +17,7 @@ const Login = () => {
     setLoading(true);
     
     try {
-      const userData = await login(email, password);
+      const userData = await login(identifier, password);
       if (userData.role === 'admin') {
         navigate('/admin');
       } else {
@@ -41,13 +41,14 @@ const Login = () => {
 
         <form onSubmit={handleLogin}>
           <div className="form-group">
-            <label className="form-label" htmlFor="email">Alamat Email</label>
+            <label className="form-label" htmlFor="identifier">Email atau Nomor HP</label>
             <input 
-              type="email" 
-              id="email" 
+              type="text" 
+              id="identifier" 
               className="form-input" 
-              value={email} 
-              onChange={e => setEmail(e.target.value)} 
+              value={identifier} 
+              onChange={e => setIdentifier(e.target.value)} 
+              placeholder="contoh@email.com atau 628123456789"
               required 
             />
           </div>

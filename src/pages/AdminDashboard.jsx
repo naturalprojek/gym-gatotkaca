@@ -21,7 +21,7 @@ const AdminDashboard = () => {
   // State untuk Kelola Data - Akun
   const [showMemberModal, setShowMemberModal] = useState(false);
   const [editingMember, setEditingMember] = useState(null);
-  const [memberForm, setMemberForm] = useState({ name: "", email: "", password: "", role: "user" });
+  const [memberForm, setMemberForm] = useState({ name: "", email: "", phone: "", password: "", role: "user" });
   const [memberError, setMemberError] = useState("");
 
   // State untuk Kelola Data - Komentar
@@ -66,14 +66,14 @@ const AdminDashboard = () => {
 
   const openAddMember = () => {
     setEditingMember(null);
-    setMemberForm({ name: "", email: "", password: "", role: "user" });
+    setMemberForm({ name: "", email: "", phone: "", password: "", role: "user" });
     setMemberError("");
     setShowMemberModal(true);
   };
 
   const openEditMember = (member) => {
     setEditingMember(member);
-    setMemberForm({ name: member.name, email: member.email, password: "", role: member.role || "user" });
+    setMemberForm({ name: member.name, email: member.email, phone: member.phone || "", password: "", role: member.role || "user" });
     setMemberError("");
     setShowMemberModal(true);
   };
@@ -104,6 +104,7 @@ const AdminDashboard = () => {
         const body = {
           name: memberForm.name,
           email: memberForm.email,
+          phone: memberForm.phone || undefined,
           role: memberForm.role,
         };
         if (memberForm.password) {
@@ -134,6 +135,7 @@ const AdminDashboard = () => {
           body: JSON.stringify({
             name: memberForm.name,
             email: memberForm.email,
+            phone: memberForm.phone || null,
             password: memberForm.password,
             role: memberForm.role,
           }),
@@ -525,6 +527,7 @@ const AdminDashboard = () => {
                           <th className="col-no">No</th>
                           <th>Nama</th>
                           <th>Email</th>
+                          <th>WhatsApp</th>
                           <th className="col-role">Role</th>
                           <th className="col-actions">Aksi</th>
                         </tr>
@@ -536,6 +539,46 @@ const AdminDashboard = () => {
                             <td className="td-name">{member.name}</td>
                             <td>
                               <span className="td-email">{member.email}</span>
+                            </td>
+                            <td>
+                              {member.phone ? (
+                                <a
+                                  href={`https://wa.me/${member.phone}?text=${encodeURIComponent(
+                                    "Halo " + member.name + "! 🎉 Selamat bergabung di *Gatot Kaca Gym Pasuruan*!\n\nKami sangat senang Anda menjadi bagian dari keluarga besar kami 💪. Jangan ragu untuk bertanya jika ada yang perlu, ya!\n\nSalam fitnes, \nTim Gatot Kaca Gym 🏋️"
+                                  )}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="action-btn"
+                                  style={{
+                                    background: "rgba(37, 211, 102, 0.12)",
+                                    color: "#25D366",
+                                    textDecoration: "none",
+                                    display: "inline-flex",
+                                    alignItems: "center",
+                                    gap: "0.3rem",
+                                    padding: "0.4rem 0.7rem",
+                                    borderRadius: "8px",
+                                    fontSize: "0.78rem",
+                                    fontWeight: 600,
+                                    cursor: "pointer",
+                                    transition: "transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.2s ease",
+                                    fontFamily: "var(--font-family)",
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.transform = "scale(1.05)";
+                                    e.currentTarget.style.background = "rgba(37, 211, 102, 0.2)";
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.transform = "scale(1)";
+                                    e.currentTarget.style.background = "rgba(37, 211, 102, 0.12)";
+                                  }}
+                                  title="Kirim WA selamat datang"
+                                >
+                                  <span>💬</span> WA
+                                </a>
+                              ) : (
+                                <span style={{ color: "#8099b8", fontSize: "0.78rem" }}>—</span>
+                              )}
                             </td>
                             <td className="col-role">
                               <span className={`role-badge ${member.role === "admin" ? "role-admin" : "role-user"}`}>

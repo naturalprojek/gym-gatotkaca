@@ -6,6 +6,7 @@ const Register = () => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
+    phone: '',
     password: '',
   });
   const [error, setError] = useState('');
@@ -73,6 +74,22 @@ const Register = () => {
               onChange={handleChange} 
               required 
             />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label" htmlFor="phone">Nomor HP / WhatsApp</label>
+            <input 
+              type="tel" 
+              id="phone" 
+              name="phone"
+              className="form-input" 
+              value={formData.phone} 
+              onChange={handleChange}
+              placeholder="Contoh: 628123456789"
+            />
+            <small style={{ color: '#5e7caa', fontSize: '0.75rem', marginTop: '0.3rem' }}>
+              Gunakan format internasional (62xxx). Dapat digunakan untuk login.
+            </small>
           </div>
           
           <div className="form-group">

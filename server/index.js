@@ -187,7 +187,7 @@ app.delete("/api/comments/:id", async (req, res) => {
 
 app.post("/api/auth/register", async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password, role, phone } = req.body;
     if (!name || !email || !password)
       return res.status(400).json({ message: "Semua field wajib diisi." });
 
@@ -199,13 +199,27 @@ app.post("/api/auth/register", async (req, res) => {
     if (existing && existing.length > 0)
       return res.status(400).json({ message: "Email sudah terdaftar." });
 
+    // Cek apakah nomor HP sudah terdaftar (jika diisi)
+    if (phone) {
+      const { data: existingPhone } = await supabase
+        .from("users")
+        .select("id")
+        .eq("phone", phone)
+        .limit(1);
+      if (existingPhone && existingPhone.length > 0)
+        return res.status(400).json({ message: "Nomor HP sudah terdaftar." });
+    }
+
     const hash = await bcrypt.hash(password, 10);
     const userRole = role || "user";
 
+    const insertData = { name, email, password_hash: hash, role: userRole };
+    if (phone) insertData.phone = phone;
+
     const { data, error } = await supabase
       .from("users")
-      .insert({ name, email, password_hash: hash, role: userRole })
-      .select("id, name, email, role, created_at")
+      .insert(insertData)
+      .select("id, name, email, phone, role, created_at")
       .single();
     if (error) throw error;
 
@@ -224,24 +238,30 @@ app.post("/api/auth/register", async (req, res) => {
 
 app.post("/api/auth/login", async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password)
-      return res.status(400).json({ message: "Email dan password wajib diisi." });
+    const { identifier, password } = req.body;
+    if (!identifier || !password)
+      return res.status(400).json({ message: "Email/nomor HP dan password wajib diisi." });
 
-    const { data: users, error } = await supabase
-      .from("users")
-      .select("*")
-      .eq("email", email)
-      .limit(1);
+    // Deteksi apakah identifier adalah email atau nomor HP
+    const isEmail = identifier.includes("@");
+    
+    let query = supabase.from("users").select("*");
+    if (isEmail) {
+      query = query.eq("email", identifier);
+    } else {
+      query = query.eq("phone", identifier);
+    }
+    
+    const { data: users, error } = await query.limit(1);
     if (error) throw error;
 
     if (!users || users.length === 0)
-      return res.status(400).json({ message: "Email atau password salah." });
+      return res.status(400).json({ message: "Email/nomor HP atau password salah." });
 
     const user = users[0];
     const match = await bcrypt.compare(password, user.password_hash);
     if (!match)
-      return res.status(400).json({ message: "Email atau password salah." });
+      return res.status(400).json({ message: "Email/nomor HP atau password salah." });
 
     const payload = {
       id: user.id,
@@ -254,6 +274,7 @@ app.post("/api/auth/login", async (req, res) => {
       id: user.id,
       name: user.name,
       email: user.email,
+      phone: user.phone || null,
       role: user.role,
     };
     res.json({ user: safeUser, token });
@@ -269,7 +290,7 @@ app.get("/api/users", async (req, res) => {
   try {
     const { data, error } = await supabase
       .from("users")
-      .select("id, name, email, role, created_at")
+      .select("id, name, email, phone, role, created_at")
       .order("created_at", { ascending: false });
     if (error) throw error;
     res.json(data);
@@ -294,9 +315,9 @@ app.delete("/api/users/:id", async (req, res) => {
 app.put("/api/users/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { role, name, email, password } = req.body;
+    const { role, name, email, password, phone } = req.body;
 
-    console.log(`[PUT /api/users/${id}] Received:`, { name, email, password: password ? "***" : "not provided", role });
+    console.log(`[PUT /api/users/${id}] Received:`, { name, email, phone, password: password ? "***" : "not provided", role });
 
     const updateData = {};
 
@@ -314,6 +335,25 @@ app.put("/api/users/:id", async (req, res) => {
       updateData.email = email;
     }
 
+    // Cek duplikasi nomor HP (jika diisi)
+    if (phone !== undefined) {
+      if (phone) {
+        const { data: existingPhone } = await supabase
+          .from("users")
+          .select("id")
+          .eq("phone", phone)
+          .neq("id", id)
+          .limit(1);
+        if (existingPhone && existingPhone.length > 0) {
+          return res.status(400).json({ message: "Nomor HP sudah digunakan oleh user lain." });
+        }
+        updateData.phone = phone;
+      } else {
+        // Nomor HP dikosongkan → set ke null
+        updateData.phone = null;
+      }
+    }
+
     if (name) updateData.name = name;
     if (password) updateData.password_hash = await bcrypt.hash(password, 10);
     if (role) updateData.role = role;
@@ -322,13 +362,13 @@ app.put("/api/users/:id", async (req, res) => {
       return res.status(400).json({ message: "Tidak ada data untuk diubah." });
     }
 
-    console.log(`[PUT /api/users/${id}] Update data:`, updateData);
+    console.log(`[PUT /api/users/${id}] Update data:`, { ...updateData, password_hash: updateData.password_hash ? "***" : undefined });
 
     const { data, error } = await supabase
       .from("users")
       .update(updateData)
       .eq("id", id)
-      .select("id, name, email, role, created_at");
+      .select("id, name, email, phone, role, created_at");
 
     if (error) throw error;
 
@@ -360,6 +400,7 @@ async function ensureAdminUser() {
     const { error } = await supabase.from("users").insert({
       name: "admin",
       email: "gatotkaca@gmail.com",
+      phone: null,
       password_hash: hash,
       role: "admin",
     });
