@@ -202,72 +202,51 @@ const Home = () => {
                 Konsultasi latihan
               </Link>
             ) : (
-              <>
-                <div
+              <div
+                style={{
+                  display: "flex",
+                  gap: "1rem",
+                  justifyContent: "center",
+                  flexWrap: "wrap",
+                }}
+              >
+                <Link
+                  to="/register"
                   style={{
-                    display: "flex",
-                    gap: "1rem",
-                    justifyContent: "center",
-                    flexWrap: "wrap",
+                    background: "linear-gradient(135deg, #1366d6, #0f4bb5)",
+                    color: "#fff",
+                    padding: "1rem 3rem",
+                    borderRadius: "20px",
+                    textDecoration: "none",
+                    fontWeight: "bold",
+                    fontSize: "1.2rem",
+                    boxShadow: "0 12px 28px rgba(15, 85, 170, 0.22)",
+                    transition:
+                      "transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease",
+                    cursor: "pointer",
                   }}
                 >
-                  <Link
-                    to="/register"
-                    style={{
-                      background: "linear-gradient(135deg, #1366d6, #0f4bb5)",
-                      color: "#fff",
-                      padding: "1rem 3rem",
-                      borderRadius: "20px",
-                      textDecoration: "none",
-                      fontWeight: "bold",
-                      fontSize: "1.2rem",
-                      boxShadow: "0 12px 28px rgba(15, 85, 170, 0.22)",
-                      transition:
-                        "transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Daftar
-                  </Link>
-                  <Link
-                    to="/login"
-                    style={{
-                      background: "transparent",
-                      color: "#0f4bb5",
-                      border: "2px solid #1366d6",
-                      padding: "1rem 3rem",
-                      borderRadius: "20px",
-                      textDecoration: "none",
-                      fontWeight: "bold",
-                      fontSize: "1.2rem",
-                      transition:
-                        "transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.35s ease",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Login
-                  </Link>
-                </div>
-                <p
+                  Daftar
+                </Link>
+                <Link
+                  to="/login"
                   style={{
-                    marginTop: "1.5rem",
-                    fontSize: "1.15rem",
-                    color: "#0f2a56",
-                    fontWeight: "600",
-                    lineHeight: "1.8",
-                    maxWidth: "400px",
-                    textAlign: "justify",
-                    textAlignLast: "center",
-                    letterSpacing: "0.02em",
-                    animation: "slideInFromRight 0.8s ease both",
-                    animationDelay: "0.4s",
+                    background: "transparent",
+                    color: "#0f4bb5",
+                    border: "2px solid #1366d6",
+                    padding: "1rem 3rem",
+                    borderRadius: "20px",
+                    textDecoration: "none",
+                    fontWeight: "bold",
+                    fontSize: "1.2rem",
+                    transition:
+                      "transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.35s ease",
+                    cursor: "pointer",
                   }}
                 >
-                  💪 Yuk, login atau daftar dulu untuk konsultasi latihan bersama
-                  <span style={{ color: "#1366d6", fontWeight: "700" }}> Gatot Kaca AI</span> dan dapatkan program latihan
-                  khusus untukmu!
-                </p>
-              </>
+                  Login
+                </Link>
+              </div>
             )}
           </div>
         </div>
