@@ -72,10 +72,10 @@ const AdminMemberModal = ({
               className="form-input"
               value={memberForm.phone || ""}
               onChange={(e) => handleChange("phone", e.target.value)}
-              placeholder="Contoh: 628123456789"
+              placeholder="Contoh: 08123456789 atau 628123456789"
             />
             <small style={{ color: '#5e7caa', fontSize: '0.75rem', marginTop: '0.3rem' }}>
-              Format internasional (62xxx). Untuk tombol WA otomatis.
+              Otomatis dikonversi ke +62. Cukup ketik nomor HP (boleh pakai 0 depan).
             </small>
           </div>
 

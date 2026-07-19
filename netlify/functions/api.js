@@ -8,6 +8,23 @@ import jwt from "jsonwebtoken";
 const app = express();
 const router = express.Router();
 
+// ===== HELPER: Normalize nomor HP ke format +62 =====
+function normalizePhone(phone) {
+  if (!phone) return null;
+  // Hapus semua karakter non-digit
+  let cleaned = phone.replace(/\D/g, '');
+  if (!cleaned) return null;
+  // Jika diawali 0, ganti dengan 62
+  if (cleaned.startsWith('0')) {
+    cleaned = '62' + cleaned.substring(1);
+  }
+  // Jika diawali angka biasa (misal 812345678), tambah 62
+  else if (!cleaned.startsWith('62')) {
+    cleaned = '62' + cleaned;
+  }
+  return '+' + cleaned;
+}
+
 // ===== CONFIG =====
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
@@ -176,12 +193,15 @@ router.post("/auth/register", async (req, res) => {
     if (existing && existing.length > 0)
       return res.status(400).json({ message: "Email sudah terdaftar." });
 
+    // Normalisasi nomor HP ke format +62
+    const normalizedPhone = normalizePhone(phone);
+
     // Cek apakah nomor HP sudah terdaftar (jika diisi)
-    if (phone) {
+    if (normalizedPhone) {
       const { data: existingPhone } = await supabase
         .from("users")
         .select("id")
-        .eq("phone", phone)
+        .eq("phone", normalizedPhone)
         .limit(1);
       if (existingPhone && existingPhone.length > 0)
         return res.status(400).json({ message: "Nomor HP sudah terdaftar." });
@@ -191,7 +211,7 @@ router.post("/auth/register", async (req, res) => {
     const userRole = role || "user";
 
     const insertData = { name, email, password_hash: hash, role: userRole };
-    if (phone) insertData.phone = phone;
+    if (normalizedPhone) insertData.phone = normalizedPhone;
 
     const { data, error } = await supabase
       .from("users")
@@ -229,7 +249,9 @@ router.post("/auth/login", async (req, res) => {
     if (isEmail) {
       query = query.eq("email", identifier);
     } else {
-      query = query.eq("phone", identifier);
+      // Normalisasi nomor HP sebelum mencari di database
+      const normalizedPhone = normalizePhone(identifier);
+      query = query.eq("phone", normalizedPhone);
     }
     
     const { data: users, error } = await query.limit(1);
@@ -317,16 +339,17 @@ router.put("/users/:id", async (req, res) => {
     // Cek duplikasi nomor HP (jika diisi)
     if (phone !== undefined) {
       if (phone) {
+        const normalizedPhone = normalizePhone(phone);
         const { data: existingPhone } = await supabase
           .from("users")
           .select("id")
-          .eq("phone", phone)
+          .eq("phone", normalizedPhone)
           .neq("id", id)
           .limit(1);
         if (existingPhone && existingPhone.length > 0) {
           return res.status(400).json({ message: "Nomor HP sudah digunakan oleh user lain." });
         }
-        updateData.phone = phone;
+        updateData.phone = normalizedPhone;
       } else {
         // Nomor HP dikosongkan → set ke null
         updateData.phone = null;

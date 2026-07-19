@@ -85,10 +85,10 @@ const Register = () => {
               className="form-input" 
               value={formData.phone} 
               onChange={handleChange}
-              placeholder="Contoh: 628123456789"
+              placeholder="Contoh: 08123456789 atau 628123456789"
             />
             <small style={{ color: '#5e7caa', fontSize: '0.75rem', marginTop: '0.3rem' }}>
-              Gunakan format internasional (62xxx). Dapat digunakan untuk login.
+              Otomatis dikonversi ke +62. Cukup ketik nomor HP Anda (boleh pakai 0 depan).
             </small>
           </div>
           

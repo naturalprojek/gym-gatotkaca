@@ -48,7 +48,7 @@ const Login = () => {
               className="form-input" 
               value={identifier} 
               onChange={e => setIdentifier(e.target.value)} 
-              placeholder="contoh@email.com atau 628123456789"
+              placeholder="contoh@email.com atau 08123456789"
               required 
             />
           </div>
