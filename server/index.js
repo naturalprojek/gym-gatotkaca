@@ -403,7 +403,6 @@ async function ensureAdminUser() {
     const { error } = await supabase.from("users").insert({
       name: "admin",
       email: "gatotkaca@gmail.com",
-      phone: null,
       password_hash: hash,
       role: "admin",
     });
