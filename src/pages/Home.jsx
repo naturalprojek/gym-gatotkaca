@@ -247,6 +247,22 @@ const Home = () => {
                   Login
                 </Link>
               </div>
+              <p
+                style={{
+                  marginTop: "1.5rem",
+                  fontSize: "0.95rem",
+                  color: "#5e7caa",
+                  fontWeight: "500",
+                  lineHeight: "1.6",
+                  maxWidth: "360px",
+                  animation: "slideInFromRight 0.8s ease both",
+                  animationDelay: "0.4s",
+                }}
+              >
+                💪 Yuk, login atau daftar dulu untuk konsultasi latihan bersama
+                <strong> Gatot Kaca AI</strong> dan dapatkan program latihan
+                khusus untukmu!
+              </p>
             )}
           </div>
         </div>
