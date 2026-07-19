@@ -196,11 +196,14 @@ router.post("/auth/register", async (req, res) => {
     const { data, error } = await supabase
       .from("users")
       .insert(insertData)
-      .select("id, name, email, phone, role, created_at")
+      .select("*")
       .single();
     if (error) throw error;
 
+    // Hapus field sensitif sebelum dikirim ke frontend
     const user = data;
+    delete user.password_hash;
+
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role },
       JWT_SECRET,
@@ -267,10 +270,12 @@ router.get("/users", async (req, res) => {
   try {
     const { data, error } = await supabase
       .from("users")
-      .select("id, name, email, phone, role, created_at")
+      .select("*")
       .order("created_at", { ascending: false });
     if (error) throw error;
-    res.json(data);
+    // Hapus password_hash dari response
+    const safeData = (data || []).map(({ password_hash, ...rest }) => rest);
+    res.json(safeData);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Gagal mengambil data user." });
@@ -340,7 +345,7 @@ router.put("/users/:id", async (req, res) => {
       .from("users")
       .update(updateData)
       .eq("id", id)
-      .select("id, name, email, phone, role, created_at");
+      .select("*");
 
     if (error) throw error;
 
@@ -348,7 +353,8 @@ router.put("/users/:id", async (req, res) => {
       return res.status(404).json({ message: "User tidak ditemukan." });
     }
 
-    res.json(data[0]);
+    const { password_hash, ...safeUser } = data[0];
+    res.json(safeUser);
   } catch (error) {
     console.error(`[PUT /api/users/${id}] Error:`, error);
     res.status(500).json({ message: "Gagal mengubah user.", error: error.message });
