@@ -251,11 +251,13 @@ const Home = () => {
                 <p
                   style={{
                     marginTop: "1.5rem",
-                    fontSize: "1.05rem",
+                    fontSize: "1.15rem",
                     color: "#0f2a56",
                     fontWeight: "600",
-                    lineHeight: "1.7",
-                    maxWidth: "380px",
+                    lineHeight: "1.8",
+                    maxWidth: "400px",
+                    textAlign: "justify",
+                    textAlignLast: "center",
                     letterSpacing: "0.02em",
                     animation: "slideInFromRight 0.8s ease both",
                     animationDelay: "0.4s",
