@@ -251,17 +251,18 @@ const Home = () => {
                 <p
                   style={{
                     marginTop: "1.5rem",
-                    fontSize: "0.95rem",
-                    color: "#5e7caa",
-                    fontWeight: "500",
-                    lineHeight: "1.6",
-                    maxWidth: "360px",
+                    fontSize: "1.05rem",
+                    color: "#0f2a56",
+                    fontWeight: "600",
+                    lineHeight: "1.7",
+                    maxWidth: "380px",
+                    letterSpacing: "0.02em",
                     animation: "slideInFromRight 0.8s ease both",
                     animationDelay: "0.4s",
                   }}
                 >
                   💪 Yuk, login atau daftar dulu untuk konsultasi latihan bersama
-                  <strong> Gatot Kaca AI</strong> dan dapatkan program latihan
+                  <span style={{ color: "#1366d6", fontWeight: "700" }}> Gatot Kaca AI</span> dan dapatkan program latihan
                   khusus untukmu!
                 </p>
               </>
