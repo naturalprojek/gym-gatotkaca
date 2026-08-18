@@ -130,40 +130,51 @@ const ResultCard = ({ result, onReset }) => {
 
   return (
     <div className="animate-fade-in" style={{ animationDelay: '0.1s' }}>
-      {/* HEADER PREMIUM */}
+      {/* HEADER HASIL */}
       <div style={{
-        background: 'linear-gradient(135deg, #232e4d 0%, #12192c 100%)',
+        background: 'var(--gradient-head)',
         borderRadius: '20px 20px 0 0',
-        padding: '1.75rem 2rem',
-        textAlign: 'center',
+        padding: '1.6rem 2rem 1.3rem',
+        borderBottom: '3px solid var(--primary-color)',
         position: 'relative',
         overflow: 'hidden'
       }}>
-        <div style={{
-          position: 'absolute', width: '160px', height: '160px',
-          borderRadius: '50%', background: 'rgba(255,255,255,0.06)',
-          top: '-50px', right: '-40px'
-        }} />
-        <div style={{
-          position: 'absolute', width: '120px', height: '120px',
-          borderRadius: '50%', background: 'rgba(255,255,255,0.04)',
-          bottom: '-40px', left: '-30px'
-        }} />
-        
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', position: 'relative' }}>
-          <div style={{
-            width: '44px', height: '44px', borderRadius: '12px',
-            background: 'rgba(255,255,255,0.18)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            color: '#fff', backdropFilter: 'blur(4px)'
-          }}>
-            {icons.dumbbell}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem' }}>
+            <div style={{
+              width: '48px', height: '48px', borderRadius: '14px',
+              background: 'var(--gradient-primary)',
+              color: 'var(--on-primary)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              boxShadow: 'var(--shadow-primary)', flexShrink: 0
+            }}>
+              {icons.dumbbell}
+            </div>
+            <div>
+              <span style={{
+                fontSize: '0.7rem', fontWeight: 700, letterSpacing: '2px',
+                textTransform: 'uppercase', color: 'var(--primary-color)'
+              }}>
+                Hasil Keputusan Pakar
+              </span>
+              <h2 style={{ margin: 0, color: '#fff', fontSize: '1.5rem', fontWeight: 700 }}>
+                Rencana Latihanmu
+              </h2>
+            </div>
           </div>
-          <h2 style={{ margin: 0, color: '#fff', fontSize: '1.5rem', fontWeight: 700, letterSpacing: '0.5px' }}>
-            Hasil Keputusan Pakar
-          </h2>
+          <span style={{
+            display: 'inline-flex', alignItems: 'center', gap: '0.4rem',
+            padding: '0.45rem 1rem', borderRadius: '999px',
+            background: 'rgba(34, 197, 94, 0.16)',
+            border: '1px solid rgba(34, 197, 94, 0.4)',
+            color: 'var(--success-color)',
+            fontSize: '0.78rem', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase'
+          }}>
+            {icons.check}
+            Siap Latihan
+          </span>
         </div>
-        <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.85rem', margin: '0.5rem 0 0', position: 'relative' }}>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', margin: '0.75rem 0 0' }}>
           Rekomendasi latihan khusus berdasarkan data Anda
         </p>
       </div>

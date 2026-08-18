@@ -105,24 +105,52 @@ const Album = () => {
             style={{
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "center",
+              alignItems: "flex-end",
+              flexWrap: "wrap",
+              gap: "1rem",
               marginBottom: "2rem",
             }}
           >
-            <h1 className="section-title-dark" style={{ marginBottom: 0 }}>
-              Galeri Album
-            </h1>
+            <div>
+              <span className="section-kicker">Galeri</span>
+              <h1
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "2.6rem",
+                  fontWeight: 800,
+                  textTransform: "uppercase",
+                  letterSpacing: "2px",
+                  color: "#f8fafc",
+                  margin: 0,
+                }}
+              >
+                Album Kegiatan
+              </h1>
+            </div>
             <Link
               to="/"
               style={{
-                color: "#f97316",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "0.4rem",
+                padding: "0.6rem 1.2rem",
+                borderRadius: "12px",
+                background: "var(--surface)",
+                border: "1px solid var(--border)",
+                color: "var(--text-secondary)",
                 textDecoration: "none",
-                fontWeight: "bold",
-                borderBottom: "2px solid #f97316",
-                transition: "opacity 0.3s ease",
+                fontWeight: 600,
+                fontSize: "0.9rem",
+                transition: "all 0.3s ease",
               }}
-              onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
-              onMouseLeave={(e) => (e.target.style.opacity = "1")}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.borderColor = "rgba(249, 115, 22, 0.5)";
+                e.currentTarget.style.color = "#fff";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.borderColor = "var(--border)";
+                e.currentTarget.style.color = "var(--text-secondary)";
+              }}
             >
               ← Kembali ke Beranda
             </Link>
@@ -252,22 +280,14 @@ const Album = () => {
             </div>
           )}
 
-          {/* Grid Album */}
-          <div
-            className="album-grid-new"
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))",
-              gap: "1.5rem",
-            }}
-          >
+          {/* Grid Album (masonry) */}
+          <div className="album-masonry">
             {albums.length > 0 ? (
               albums.map((album) => (
                 <div
                   key={album.id}
                   className="album-item-new"
                   style={{
-                    aspectRatio: "1",
                     borderRadius: "16px",
                     overflow: "hidden",
                     position: "relative",

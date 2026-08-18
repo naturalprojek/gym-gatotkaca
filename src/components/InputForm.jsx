@@ -95,54 +95,46 @@ const InputForm = ({ onCalculate }) => {
 
   return (
     <div className="animate-fade-in" style={{ animationDelay: '0.1s', height: '100%', display: 'flex', flexDirection: 'column' }}>
-      {/* Header Premium */}
+      {/* Header */}
       <div style={{
-        background: 'linear-gradient(135deg, #232e4d 0%, #12192c 100%)',
+        background: 'var(--gradient-head)',
         borderRadius: '20px 20px 0 0',
-        padding: '1.75rem 2rem',
-        textAlign: 'center',
+        padding: '1.6rem 2rem 1.3rem',
+        borderBottom: '3px solid var(--primary-color)',
         position: 'relative',
         overflow: 'hidden'
       }}>
-        {/* Decorative circles */}
-        <div style={{
-          position: 'absolute',
-          width: '130px',
-          height: '130px',
-          borderRadius: '50%',
-          background: 'rgba(255,255,255,0.06)',
-          top: '-40px',
-          right: '-30px'
-        }} />
-        <div style={{
-          position: 'absolute',
-          width: '100px',
-          height: '100px',
-          borderRadius: '50%',
-          background: 'rgba(255,255,255,0.04)',
-          bottom: '-30px',
-          left: '-20px'
-        }} />
-        
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', position: 'relative' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.9rem' }}>
           <div style={{
-            width: '42px',
-            height: '42px',
-            borderRadius: '12px',
-            background: 'rgba(255,255,255,0.18)',
+            width: '48px',
+            height: '48px',
+            borderRadius: '14px',
+            background: 'var(--gradient-primary)',
+            color: 'var(--on-primary)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: '#fff',
-            backdropFilter: 'blur(4px)'
+            boxShadow: 'var(--shadow-primary)',
+            flexShrink: 0
           }}>
             {icons.dumbbell}
           </div>
-          <h2 style={{ margin: 0, color: '#fff', fontSize: '1.4rem', fontWeight: '700', letterSpacing: '0.5px' }}>
-            Sistem Pakar FitMind
-          </h2>
+          <div>
+            <span style={{
+              fontSize: '0.7rem',
+              fontWeight: 700,
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+              color: 'var(--primary-color)'
+            }}>
+              FitMind Expert System
+            </span>
+            <h2 style={{ margin: 0, color: '#fff', fontSize: '1.5rem', fontWeight: 700 }}>
+              Konsultasi Latihan
+            </h2>
+          </div>
         </div>
-        <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '0.85rem', margin: '0.5rem 0 0', position: 'relative' }}>
+        <p style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', margin: '0.75rem 0 0' }}>
           Masukkan data Anda untuk rekomendasi latihan optimal
         </p>
       </div>

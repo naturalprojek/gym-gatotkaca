@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { compressImage } from "../logic/imageUtils";
 import AdminMemberModal from "../components/AdminMemberModal";
@@ -380,61 +380,51 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-page">
-      <div className="admin-layout">
-        {/* ===== SIDEBAR ===== */}
-        <aside className="admin-sidebar slide-in-left">
-          <div className="sidebar-brand">
-            <div className="sidebar-avatar">A</div>
-            <div className="sidebar-brand-text">
-              <h2>Admin</h2>
-              <p>Gatotkaca Gym</p>
-            </div>
-          </div>
-
-          <nav className="sidebar-menu">
-            <Link to="/" className="sidebar-back-link">
-              <span className="sidebar-link-icon">{icons.arrow}</span>
-              <span>Kembali ke Home</span>
-            </Link>
-
-            <div className="sidebar-divider" />
-
-            <button
-              type="button"
-              className={`sidebar-nav-btn ${activeTab === "beranda" ? "active" : ""}`}
-              onClick={() => setActiveTab("beranda")}
-            >
-              <span className="sidebar-link-icon">{icons.chart}</span>
-              <span>Beranda</span>
-            </button>
-
-            <button
-              type="button"
-              className={`sidebar-nav-btn ${activeTab === "data" ? "active" : ""}`}
-              onClick={() => setActiveTab("data")}
-            >
-              <span className="sidebar-link-icon">{icons.users}</span>
-              <span>Kelola Data</span>
-            </button>
-
-            <button
-              type="button"
-              className={`sidebar-nav-btn ${activeTab === "kelola" ? "active" : ""}`}
-              onClick={() => setActiveTab("kelola")}
-            >
-              <span className="sidebar-link-icon">{icons.image}</span>
-              <span>Kelola Foto</span>
-            </button>
-          </nav>
-
-          <button type="button" onClick={handleLogout} className="sidebar-logout-btn">
-            <span className="sidebar-link-icon">{icons.logout}</span>
-            <span>Keluar</span>
-          </button>
-        </aside>
-
+      <div className="admin-layout" style={{ gridTemplateColumns: "1fr" }}>
         {/* ===== MAIN CONTENT ===== */}
         <main className="admin-main" ref={mainRef}>
+
+          {/* ===== TOPBAR ===== */}
+          <div className="admin-topbar slide-in-top">
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+              <div className="dash-avatar">A</div>
+              <div>
+                <h1>Dasbor Admin</h1>
+                <div className="sub">Gatot Kaca Gym · Selamat datang kembali</div>
+              </div>
+            </div>
+            <div className="admin-tabs">
+              <button
+                type="button"
+                className={`admin-tab ${activeTab === "beranda" ? "active" : ""}`}
+                onClick={() => setActiveTab("beranda")}
+              >
+                {icons.chart} Beranda
+              </button>
+              <button
+                type="button"
+                className={`admin-tab ${activeTab === "data" ? "active" : ""}`}
+                onClick={() => setActiveTab("data")}
+              >
+                {icons.users} Kelola Data
+              </button>
+              <button
+                type="button"
+                className={`admin-tab ${activeTab === "kelola" ? "active" : ""}`}
+                onClick={() => setActiveTab("kelola")}
+              >
+                {icons.image} Kelola Foto
+              </button>
+              <button
+                type="button"
+                onClick={handleLogout}
+                className="admin-tab"
+                style={{ borderColor: "rgba(239, 68, 68, 0.4)", color: "var(--danger-color)" }}
+              >
+                {icons.logout} Keluar
+              </button>
+            </div>
+          </div>
 
           {/* ===== TAB BERANDA ===== */}
           {activeTab === "beranda" && (

@@ -197,6 +197,15 @@ const Navbar = () => {
         </button>
 
         <div className={`nav-links ${isMenuOpen ? "open" : ""}`}>
+          {!user && (
+            <Link
+              to="/register"
+              onClick={closeMenu}
+              className="nav-link-item nav-cta"
+            >
+              Daftar
+            </Link>
+          )}
           <a href="/#home" onClick={closeMenu} className="nav-link-item">
             <span className="nav-link-icon">{icons.home}</span>
             Beranda

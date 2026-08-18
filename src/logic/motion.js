@@ -104,6 +104,7 @@ export function initCounters(scope) {
   const ctx = gsap.context(() => {
     nums.forEach((el) => {
       const target = parseFloat(el.dataset.count || 0);
+      const suffix = el.dataset.suffix || "";
       const state = { val: 0 };
       gsap.to(state, {
         val: target,
@@ -111,7 +112,7 @@ export function initCounters(scope) {
         ease: "power1.out",
         scrollTrigger: { trigger: el, start: "top 90%" },
         onUpdate: () => {
-          el.textContent = String(Math.round(state.val));
+          el.textContent = String(Math.round(state.val)) + suffix;
         },
       });
     });
