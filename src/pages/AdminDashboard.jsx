@@ -3,9 +3,72 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import { compressImage } from "../logic/imageUtils";
 import AdminMemberModal from "../components/AdminMemberModal";
+import { initScrollReveals, initCounters } from "../logic/motion";
 
 // /api → Vite proxy ke localhost:4000 (lokal) | Netlify redirect ke function (production)
 const API_BASE = "/api";
+
+// Ikon SVG (tanpa emoji, sesuai checklist ui-ux-pro-max)
+const icons = {
+  arrow: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="19" y1="12" x2="5" y2="12" />
+      <polyline points="12 19 5 12 12 5" />
+    </svg>
+  ),
+  chart: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <line x1="18" y1="20" x2="18" y2="10" />
+      <line x1="12" y1="20" x2="12" y2="4" />
+      <line x1="6" y1="20" x2="6" y2="14" />
+    </svg>
+  ),
+  users: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+      <circle cx="9" cy="7" r="4" />
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+    </svg>
+  ),
+  image: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+      <circle cx="8.5" cy="8.5" r="1.5" />
+      <polyline points="21 15 16 10 5 21" />
+    </svg>
+  ),
+  logout: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+      <polyline points="16 17 21 12 16 7" />
+      <line x1="21" y1="12" x2="9" y2="12" />
+    </svg>
+  ),
+  comment: (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    </svg>
+  ),
+  edit: (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
+      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z" />
+    </svg>
+  ),
+  trash: (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="3 6 5 6 21 6" />
+      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+    </svg>
+  ),
+  inbox: (
+    <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
+      <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
+    </svg>
+  ),
+};
 
 const AdminDashboard = () => {
   const { user, loading, logout } = useContext(AuthContext);
@@ -35,6 +98,16 @@ const AdminDashboard = () => {
   useEffect(() => {
     loadData();
   }, []);
+
+  // Animasi scroll reveal + counter angka statistik (GSAP)
+  useEffect(() => {
+    const cleanupReveal = initScrollReveals(mainRef);
+    const cleanupCounters = initCounters(mainRef);
+    return () => {
+      cleanupReveal();
+      cleanupCounters();
+    };
+  }, [activeTab]);
 
   const loadData = async () => {
     // Fetch users dari server
@@ -320,7 +393,7 @@ const AdminDashboard = () => {
 
           <nav className="sidebar-menu">
             <Link to="/" className="sidebar-back-link">
-              <span className="sidebar-link-icon">←</span>
+              <span className="sidebar-link-icon">{icons.arrow}</span>
               <span>Kembali ke Home</span>
             </Link>
 
@@ -331,7 +404,7 @@ const AdminDashboard = () => {
               className={`sidebar-nav-btn ${activeTab === "beranda" ? "active" : ""}`}
               onClick={() => setActiveTab("beranda")}
             >
-              <span className="sidebar-link-icon">📊</span>
+              <span className="sidebar-link-icon">{icons.chart}</span>
               <span>Beranda</span>
             </button>
 
@@ -340,7 +413,7 @@ const AdminDashboard = () => {
               className={`sidebar-nav-btn ${activeTab === "data" ? "active" : ""}`}
               onClick={() => setActiveTab("data")}
             >
-              <span className="sidebar-link-icon">👥</span>
+              <span className="sidebar-link-icon">{icons.users}</span>
               <span>Kelola Data</span>
             </button>
 
@@ -349,13 +422,13 @@ const AdminDashboard = () => {
               className={`sidebar-nav-btn ${activeTab === "kelola" ? "active" : ""}`}
               onClick={() => setActiveTab("kelola")}
             >
-              <span className="sidebar-link-icon">🖼️</span>
+              <span className="sidebar-link-icon">{icons.image}</span>
               <span>Kelola Foto</span>
             </button>
           </nav>
 
           <button type="button" onClick={handleLogout} className="sidebar-logout-btn">
-            <span className="sidebar-link-icon">🚪</span>
+            <span className="sidebar-link-icon">{icons.logout}</span>
             <span>Keluar</span>
           </button>
         </aside>
@@ -371,10 +444,10 @@ const AdminDashboard = () => {
                   <div className="stat-card-body">
                     <div className="stat-info">
                       <span className="stat-label">Pengguna Terdaftar</span>
-                      <span className="stat-value">{members.length}</span>
+                      <span className="stat-value" data-count={members.length}>{members.length}</span>
                     </div>
                     <div className="stat-icon-box">
-                      <span className="stat-icon">👥</span>
+                      <span className="stat-icon">{icons.users}</span>
                     </div>
                   </div>
                   <div className="stat-footer">
@@ -386,10 +459,10 @@ const AdminDashboard = () => {
                   <div className="stat-card-body">
                     <div className="stat-info">
                       <span className="stat-label">Total Tanggapan</span>
-                      <span className="stat-value">{comments.length}</span>
+                      <span className="stat-value" data-count={comments.length}>{comments.length}</span>
                     </div>
                     <div className="stat-icon-box">
-                      <span className="stat-icon">💬</span>
+                      <span className="stat-icon">{icons.comment}</span>
                     </div>
                   </div>
                   <div className="stat-footer">
@@ -401,10 +474,10 @@ const AdminDashboard = () => {
                   <div className="stat-card-body">
                     <div className="stat-info">
                       <span className="stat-label">Foto Album</span>
-                      <span className="stat-value">{albums.length}</span>
+                      <span className="stat-value" data-count={albums.length}>{albums.length}</span>
                     </div>
                     <div className="stat-icon-box">
-                      <span className="stat-icon">🖼️</span>
+                      <span className="stat-icon">{icons.image}</span>
                     </div>
                   </div>
                   <div className="stat-footer">
@@ -416,12 +489,12 @@ const AdminDashboard = () => {
               <section className="admin-bottom-panel">
                 <div className="content-card comments-card slide-in-left" style={{ animationDelay: "0.4s" }}>
                   <div className="content-card-header">
-                    <h3><span className="header-icon">💬</span> Komentar Terbaru</h3>
+                    <h3><span className="header-icon">{icons.comment}</span> Komentar Terbaru</h3>
                     <span className="card-badge">{latestComments.length} terbaru</span>
                   </div>
                   {latestComments.length === 0 ? (
                     <div className="empty-state-wrap">
-                      <span className="empty-icon">📭</span>
+                      <span className="empty-icon">{icons.inbox}</span>
                       <p className="empty-text">Belum ada komentar masuk.</p>
                     </div>
                   ) : (
@@ -456,7 +529,7 @@ const AdminDashboard = () => {
 
                 <div className="content-card chart-card slide-in-right" style={{ animationDelay: "0.5s" }}>
                   <div className="content-card-header">
-                    <h3><span className="header-icon">📊</span> Grafik Kepuasan</h3>
+                    <h3><span className="header-icon">{icons.chart}</span> Grafik Kepuasan</h3>
                     <span className="card-badge">{comments.length} tanggapan</span>
                   </div>
                   <div className="chart-wrapper">
@@ -508,7 +581,7 @@ const AdminDashboard = () => {
               {/* DATA AKUN */}
               <div className="content-card data-card slide-in-left" style={{ animationDelay: "0.1s" }}>
                 <div className="content-card-header between">
-                  <h3><span className="header-icon">👥</span> Data Akun</h3>
+                  <h3><span className="header-icon">{icons.users}</span> Data Akun</h3>
                   <button onClick={openAddMember} className="btn-add">
                     <span>+</span> Tambah Akun
                   </button>
@@ -516,7 +589,7 @@ const AdminDashboard = () => {
 
                 {members.length === 0 ? (
                   <div className="empty-state-wrap">
-                    <span className="empty-icon">📭</span>
+                    <span className="empty-icon">{icons.inbox}</span>
                     <p className="empty-text">Belum ada pengguna terdaftar.</p>
                   </div>
                 ) : (
@@ -574,7 +647,7 @@ const AdminDashboard = () => {
                                   }}
                                   title="Kirim WA selamat datang"
                                 >
-                                  <span>💬</span> WA
+                                  <span>{icons.comment}</span> WA
                                 </a>
                               ) : (
                                 <span style={{ color: "#8099b8", fontSize: "0.78rem" }}>—</span>
@@ -591,13 +664,13 @@ const AdminDashboard = () => {
                                   onClick={() => openEditMember(member)}
                                   className="action-btn action-edit"
                                 >
-                                  <span className="action-btn-icon">✏️</span> Edit
+                                  <span className="action-btn-icon">{icons.edit}</span> Edit
                                 </button>
                                 <button
                                   onClick={() => handleDeleteMember(member)}
                                   className="action-btn action-delete"
                                 >
-                                  <span className="action-btn-icon">🗑️</span> Hapus
+                                  <span className="action-btn-icon">{icons.trash}</span> Hapus
                                 </button>
                               </div>
                             </td>
@@ -612,13 +685,13 @@ const AdminDashboard = () => {
               {/* DATA KOMENTAR */}
               <div className="content-card data-card slide-in-right" style={{ animationDelay: "0.2s" }}>
                 <div className="content-card-header">
-                  <h3><span className="header-icon">💬</span> Data Komentar</h3>
+                  <h3><span className="header-icon">{icons.comment}</span> Data Komentar</h3>
                   <span className="card-badge">{comments.length} total</span>
                 </div>
 
                 {comments.length === 0 ? (
                   <div className="empty-state-wrap">
-                    <span className="empty-icon">📭</span>
+                    <span className="empty-icon">{icons.inbox}</span>
                     <p className="empty-text">Belum ada komentar.</p>
                   </div>
                 ) : (
@@ -667,7 +740,7 @@ const AdminDashboard = () => {
                                 disabled={deletingComment}
                                 className={`action-btn action-delete ${deletingComment ? "disabled" : ""}`}
                               >
-                                <span className="action-btn-icon">🗑️</span> Hapus
+                                <span className="action-btn-icon">{icons.trash}</span> Hapus
                               </button>
                             </td>
                           </tr>
@@ -684,7 +757,7 @@ const AdminDashboard = () => {
           {activeTab === "kelola" && (
             <section className="content-card photo-manager-card slide-in-bottom" style={{ animationDelay: "0.3s" }}>
               <div className="content-card-header">
-                <h3><span className="header-icon">🖼️</span> Kelola Foto</h3>
+                <h3><span className="header-icon">{icons.image}</span> Kelola Foto</h3>
                 <span className="card-badge">{albums.length} foto</span>
               </div>
 
@@ -720,7 +793,7 @@ const AdminDashboard = () => {
 
               {albums.length === 0 ? (
                 <div className="empty-state-wrap" style={{ marginTop: "1.5rem" }}>
-                  <span className="empty-icon">📭</span>
+                  <span className="empty-icon">{icons.inbox}</span>
                   <p className="empty-text">Belum ada foto album.</p>
                 </div>
               ) : (
@@ -735,7 +808,7 @@ const AdminDashboard = () => {
                         className="photo-delete-btn"
                         onClick={() => handleDeleteAlbum(album.id)}
                       >
-                        🗑️
+                        {icons.trash}
                       </button>
                     </div>
                   ))}

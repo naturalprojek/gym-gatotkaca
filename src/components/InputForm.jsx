@@ -97,7 +97,7 @@ const InputForm = ({ onCalculate }) => {
     <div className="animate-fade-in" style={{ animationDelay: '0.1s', height: '100%', display: 'flex', flexDirection: 'column' }}>
       {/* Header Premium */}
       <div style={{
-        background: 'linear-gradient(135deg, #1366d6 0%, #0f4bb5 100%)',
+        background: 'linear-gradient(135deg, #232e4d 0%, #12192c 100%)',
         borderRadius: '20px 20px 0 0',
         padding: '1.75rem 2rem',
         textAlign: 'center',
@@ -149,24 +149,24 @@ const InputForm = ({ onCalculate }) => {
 
       {/* Body Form - Glass Panel */}
       <div style={{
-        background: 'rgba(255, 255, 255, 0.85)',
+        background: 'rgba(20, 27, 46, 0.92)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
-        border: '1px solid rgba(15, 85, 170, 0.12)',
+        border: '1px solid var(--border)',
         borderTop: 'none',
-        boxShadow: '0 14px 40px 0 rgba(15, 85, 170, 0.12)',
+        boxShadow: '0 14px 40px 0 rgba(0, 0, 0, 0.4)',
         borderRadius: '0 0 20px 20px',
         padding: '2rem 2rem 1.5rem',
         flex: 1
       }}>          {/* BMI Live Indicator */}
         <div style={{
-          background: bmi !== null && bmi < 18.5 ? 'linear-gradient(135deg, #fefce8, #fef9c3)' :
-                       bmi !== null && bmi >= 25 ? 'linear-gradient(135deg, #fef2f2, #fee2e2)' :
-                       'linear-gradient(135deg, #eef5ff, #f5f9ff)',
+          background: bmi !== null && bmi < 18.5 ? 'linear-gradient(135deg, #3a2f14, #332a12)' :
+                       bmi !== null && bmi >= 25 ? 'linear-gradient(135deg, #3b1a1a, #341818)' :
+                       'linear-gradient(135deg, #1c2642, #17213a)',
           borderRadius: '14px',
           padding: '1rem 1.25rem',
           marginBottom: '1.75rem',
-          border: '1px solid rgba(15, 85, 170, 0.08)',
+          border: '1px solid var(--border)',
           display: 'flex',
           alignItems: 'center',
           gap: '1rem',
@@ -176,7 +176,7 @@ const InputForm = ({ onCalculate }) => {
             width: '44px',
             height: '44px',
             borderRadius: '12px',
-            background: 'linear-gradient(135deg, #1366d6, #0f4bb5)',
+            background: 'linear-gradient(135deg, #232e4d, #12192c)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -187,11 +187,11 @@ const InputForm = ({ onCalculate }) => {
           </div>
           <div style={{ flex: 1 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
-              <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#0f3b82' }}>BMI Real-time</span>
+              <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#f1f5f9' }}>BMI Real-time</span>
               <span style={{
                 fontSize: '0.9rem',
                 fontWeight: 700,
-                color: bmiCategory ? bmiCategory.color : '#476b9c'
+                color: bmiCategory ? bmiCategory.color : '#94a3b8'
               }}>
                 {bmi !== null ? `${bmi.toFixed(1)}` : '—'}
               </span>
@@ -199,7 +199,7 @@ const InputForm = ({ onCalculate }) => {
             {/* Progress bar */}
             <div style={{
               height: '6px',
-              background: 'rgba(15, 85, 170, 0.08)',
+              background: 'rgba(148, 163, 184, 0.14)',
               borderRadius: '3px',
               overflow: 'hidden',
               position: 'relative'
@@ -223,8 +223,8 @@ const InputForm = ({ onCalculate }) => {
         <form onSubmit={handleSubmit}>
           {/* Berat Badan */}
           <div className="form-group" style={{ marginBottom: '1.25rem' }}>
-            <label className="form-label" htmlFor="weight" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#0f3b82', fontWeight: 600, fontSize: '0.85rem', marginBottom: '0.5rem' }}>
-              <span style={{ color: '#1366d6' }}>{icons.weight}</span>
+            <label className="form-label" htmlFor="weight" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#f1f5f9', fontWeight: 600, fontSize: '0.85rem', marginBottom: '0.5rem' }}>
+              <span style={{ color: '#f97316' }}>{icons.weight}</span>
               Berat Badan (kg)
             </label>
             <div style={{ position: 'relative' }}>
@@ -241,25 +241,25 @@ const InputForm = ({ onCalculate }) => {
                 style={{
                   width: '100%',
                   padding: '0.85rem 1rem 0.85rem 2.8rem',
-                  background: '#f0f5ff',
-                  border: '2px solid rgba(15, 85, 170, 0.12)',
+                  background: '#1c2642',
+                  border: '2px solid rgba(148, 163, 184, 0.18)',
                   borderRadius: '12px',
-                  color: '#0f2a56',
-                  fontFamily: '"Poppins", sans-serif',
+                  color: '#e2e8f0',
+                  fontFamily: 'var(--font-body)',
                   fontSize: '0.95rem',
                   outline: 'none',
                   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   boxSizing: 'border-box'
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = '#1366d6';
-                  e.currentTarget.style.boxShadow = '0 0 0 4px rgba(19, 102, 214, 0.12)';
+                  e.currentTarget.style.borderColor = '#f97316';
+                  e.currentTarget.style.boxShadow = '0 0 0 4px rgba(249, 115, 22, 0.12)';
                   e.currentTarget.style.background = '#fff';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(15, 85, 170, 0.12)';
+                  e.currentTarget.style.borderColor = 'rgba(148, 163, 184, 0.18)';
                   e.currentTarget.style.boxShadow = 'none';
-                  e.currentTarget.style.background = '#f0f5ff';
+                  e.currentTarget.style.background = '#1c2642';
                 }}
               />
               <div style={{
@@ -267,7 +267,7 @@ const InputForm = ({ onCalculate }) => {
                 left: '0.85rem',
                 top: '50%',
                 transform: 'translateY(-50%)',
-                color: '#1366d6',
+                color: '#f97316',
                 opacity: 0.6,
                 pointerEvents: 'none'
               }}>
@@ -278,8 +278,8 @@ const InputForm = ({ onCalculate }) => {
 
           {/* Tinggi Badan */}
           <div className="form-group" style={{ marginBottom: '1.25rem' }}>
-            <label className="form-label" htmlFor="height" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#0f3b82', fontWeight: 600, fontSize: '0.85rem', marginBottom: '0.5rem' }}>
-              <span style={{ color: '#1366d6' }}>{icons.height}</span>
+            <label className="form-label" htmlFor="height" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#f1f5f9', fontWeight: 600, fontSize: '0.85rem', marginBottom: '0.5rem' }}>
+              <span style={{ color: '#f97316' }}>{icons.height}</span>
               Tinggi Badan (cm)
             </label>
             <div style={{ position: 'relative' }}>
@@ -296,25 +296,25 @@ const InputForm = ({ onCalculate }) => {
                 style={{
                   width: '100%',
                   padding: '0.85rem 1rem 0.85rem 2.8rem',
-                  background: '#f0f5ff',
-                  border: '2px solid rgba(15, 85, 170, 0.12)',
+                  background: '#1c2642',
+                  border: '2px solid rgba(148, 163, 184, 0.18)',
                   borderRadius: '12px',
-                  color: '#0f2a56',
-                  fontFamily: '"Poppins", sans-serif',
+                  color: '#e2e8f0',
+                  fontFamily: 'var(--font-body)',
                   fontSize: '0.95rem',
                   outline: 'none',
                   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   boxSizing: 'border-box'
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = '#1366d6';
-                  e.currentTarget.style.boxShadow = '0 0 0 4px rgba(19, 102, 214, 0.12)';
+                  e.currentTarget.style.borderColor = '#f97316';
+                  e.currentTarget.style.boxShadow = '0 0 0 4px rgba(249, 115, 22, 0.12)';
                   e.currentTarget.style.background = '#fff';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(15, 85, 170, 0.12)';
+                  e.currentTarget.style.borderColor = 'rgba(148, 163, 184, 0.18)';
                   e.currentTarget.style.boxShadow = 'none';
-                  e.currentTarget.style.background = '#f0f5ff';
+                  e.currentTarget.style.background = '#1c2642';
                 }}
               />
               <div style={{
@@ -322,7 +322,7 @@ const InputForm = ({ onCalculate }) => {
                 left: '0.85rem',
                 top: '50%',
                 transform: 'translateY(-50%)',
-                color: '#1366d6',
+                color: '#f97316',
                 opacity: 0.6,
                 pointerEvents: 'none'
               }}>
@@ -333,8 +333,8 @@ const InputForm = ({ onCalculate }) => {
 
           {/* Tujuan Latihan */}
           <div className="form-group" style={{ marginBottom: '1.25rem' }}>
-            <label className="form-label" htmlFor="goal" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#0f3b82', fontWeight: 600, fontSize: '0.85rem', marginBottom: '0.5rem' }}>
-              <span style={{ color: '#1366d6' }}>{icons.goal}</span>
+            <label className="form-label" htmlFor="goal" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#f1f5f9', fontWeight: 600, fontSize: '0.85rem', marginBottom: '0.5rem' }}>
+              <span style={{ color: '#f97316' }}>{icons.goal}</span>
               Tujuan Latihan
             </label>
             <div style={{ position: 'relative' }}>
@@ -346,11 +346,11 @@ const InputForm = ({ onCalculate }) => {
                 style={{
                   width: '100%',
                   padding: '0.85rem 1rem 0.85rem 2.8rem',
-                  background: '#f0f5ff',
-                  border: '2px solid rgba(15, 85, 170, 0.12)',
+                  background: '#1c2642',
+                  border: '2px solid rgba(148, 163, 184, 0.18)',
                   borderRadius: '12px',
-                  color: '#0f2a56',
-                  fontFamily: '"Poppins", sans-serif',
+                  color: '#e2e8f0',
+                  fontFamily: 'var(--font-body)',
                   fontSize: '0.95rem',
                   outline: 'none',
                   cursor: 'pointer',
@@ -361,14 +361,14 @@ const InputForm = ({ onCalculate }) => {
                   boxSizing: 'border-box'
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = '#1366d6';
-                  e.currentTarget.style.boxShadow = '0 0 0 4px rgba(19, 102, 214, 0.12)';
+                  e.currentTarget.style.borderColor = '#f97316';
+                  e.currentTarget.style.boxShadow = '0 0 0 4px rgba(249, 115, 22, 0.12)';
                   e.currentTarget.style.background = '#fff';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(15, 85, 170, 0.12)';
+                  e.currentTarget.style.borderColor = 'rgba(148, 163, 184, 0.18)';
                   e.currentTarget.style.boxShadow = 'none';
-                  e.currentTarget.style.background = '#f0f5ff';
+                  e.currentTarget.style.background = '#1c2642';
                 }}
               >
                 <option value="Fat Loss" disabled={isUnderweight}>Menurunkan Lemak (Fat Loss) {isUnderweight ? '- Tidak untuk BMI Kurang' : ''}</option>
@@ -380,7 +380,7 @@ const InputForm = ({ onCalculate }) => {
                 left: '0.85rem',
                 top: '50%',
                 transform: 'translateY(-50%)',
-                color: '#1366d6',
+                color: '#f97316',
                 opacity: 0.6,
                 pointerEvents: 'none'
               }}>
@@ -392,7 +392,7 @@ const InputForm = ({ onCalculate }) => {
                 right: '1rem',
                 top: '50%',
                 transform: 'translateY(-50%)',
-                color: '#476b9c',
+                color: '#94a3b8',
                 pointerEvents: 'none',
                 fontSize: '0.7rem'
               }}>
@@ -405,8 +405,8 @@ const InputForm = ({ onCalculate }) => {
 
           {/* Durasi Latihan */}
           <div className="form-group" style={{ marginBottom: '1.5rem' }}>
-            <label className="form-label" htmlFor="frequency" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#0f3b82', fontWeight: 600, fontSize: '0.85rem', marginBottom: '0.5rem' }}>
-              <span style={{ color: '#1366d6' }}>{icons.frequency}</span>
+            <label className="form-label" htmlFor="frequency" style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#f1f5f9', fontWeight: 600, fontSize: '0.85rem', marginBottom: '0.5rem' }}>
+              <span style={{ color: '#f97316' }}>{icons.frequency}</span>
               Durasi Latihan (Hari/Minggu)
             </label>
             <div style={{ position: 'relative' }}>
@@ -418,11 +418,11 @@ const InputForm = ({ onCalculate }) => {
                 style={{
                   width: '100%',
                   padding: '0.85rem 1rem 0.85rem 2.8rem',
-                  background: '#f0f5ff',
-                  border: '2px solid rgba(15, 85, 170, 0.12)',
+                  background: '#1c2642',
+                  border: '2px solid rgba(148, 163, 184, 0.18)',
                   borderRadius: '12px',
-                  color: '#0f2a56',
-                  fontFamily: '"Poppins", sans-serif',
+                  color: '#e2e8f0',
+                  fontFamily: 'var(--font-body)',
                   fontSize: '0.95rem',
                   outline: 'none',
                   cursor: 'pointer',
@@ -433,14 +433,14 @@ const InputForm = ({ onCalculate }) => {
                   boxSizing: 'border-box'
                 }}
                 onFocus={(e) => {
-                  e.currentTarget.style.borderColor = '#1366d6';
-                  e.currentTarget.style.boxShadow = '0 0 0 4px rgba(19, 102, 214, 0.12)';
+                  e.currentTarget.style.borderColor = '#f97316';
+                  e.currentTarget.style.boxShadow = '0 0 0 4px rgba(249, 115, 22, 0.12)';
                   e.currentTarget.style.background = '#fff';
                 }}
                 onBlur={(e) => {
-                  e.currentTarget.style.borderColor = 'rgba(15, 85, 170, 0.12)';
+                  e.currentTarget.style.borderColor = 'rgba(148, 163, 184, 0.18)';
                   e.currentTarget.style.boxShadow = 'none';
-                  e.currentTarget.style.background = '#f0f5ff';
+                  e.currentTarget.style.background = '#1c2642';
                 }}
               >
                 <option value="3">3 Hari (Pemula / Sibuk)</option>
@@ -453,7 +453,7 @@ const InputForm = ({ onCalculate }) => {
                 left: '0.85rem',
                 top: '50%',
                 transform: 'translateY(-50%)',
-                color: '#1366d6',
+                color: '#f97316',
                 opacity: 0.6,
                 pointerEvents: 'none'
               }}>
@@ -465,7 +465,7 @@ const InputForm = ({ onCalculate }) => {
                 right: '1rem',
                 top: '50%',
                 transform: 'translateY(-50%)',
-                color: '#476b9c',
+                color: '#94a3b8',
                 pointerEvents: 'none',
                 fontSize: '0.7rem'
               }}>
@@ -482,16 +482,16 @@ const InputForm = ({ onCalculate }) => {
             style={{
               width: '100%',
               padding: '1rem',
-              background: 'linear-gradient(135deg, #1366d6 0%, #0f4bb5 100%)',
-              color: '#fff',
+              background: 'var(--gradient-primary)',
+              color: 'var(--on-primary)',
               border: 'none',
               borderRadius: '14px',
               fontWeight: '700',
               fontSize: '1rem',
               letterSpacing: '1px',
               cursor: 'pointer',
-              fontFamily: '"Poppins", sans-serif',
-              boxShadow: '0 8px 24px rgba(15, 75, 181, 0.3)',
+              fontFamily: 'var(--font-body)',
+              boxShadow: '0 8px 24px rgba(249, 115, 22, 0.3)',
               transition: 'all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)',
               display: 'flex',
               alignItems: 'center',
@@ -500,11 +500,11 @@ const InputForm = ({ onCalculate }) => {
             }}
             onMouseEnter={(e) => {
               e.currentTarget.style.transform = 'translateY(-3px)';
-              e.currentTarget.style.boxShadow = '0 12px 32px rgba(15, 75, 181, 0.4)';
+              e.currentTarget.style.boxShadow = '0 12px 32px rgba(249, 115, 22, 0.4)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 8px 24px rgba(15, 75, 181, 0.3)';
+              e.currentTarget.style.boxShadow = '0 8px 24px rgba(249, 115, 22, 0.3)';
             }}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

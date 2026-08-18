@@ -20,6 +20,10 @@ nul
 .env.local
 .env.production.local
 
+# Agent skill tooling (lokal, tidak perlu di-upload)
+.agents/
+skills-lock.json
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

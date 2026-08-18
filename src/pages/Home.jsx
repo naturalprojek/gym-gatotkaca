@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
+import { initHeroAnimations, initScrollReveals } from "../logic/motion";
 import foto1 from "../../disen/foto1.JPG";
 import foto2 from "../../disen/foto2.JPG";
 
@@ -9,6 +10,7 @@ const API_BASE = "/api";
 
 const Home = () => {
   const { user } = useContext(AuthContext);
+  const pageRef = useRef(null);
   const [albums, setAlbums] = useState([]);
   const [email, setEmail] = useState("");
   const [komentar, setKomentar] = useState("");
@@ -43,10 +45,20 @@ const Home = () => {
       setCurrentBgIndex(
         (prevIndex) => (prevIndex + 1) % backgroundImages.length,
       );
-    }, 3000);
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [backgroundImages.length]);
+
+  // Animasi hero (GSAP) + scroll reveal untuk section di bawah
+  useEffect(() => {
+    const cleanupHero = initHeroAnimations(pageRef);
+    const cleanupReveal = initScrollReveals(pageRef);
+    return () => {
+      cleanupHero();
+      cleanupReveal();
+    };
+  }, []);
 
   const handleCommentSubmit = async (e) => {
     e.preventDefault();
@@ -87,8 +99,42 @@ const Home = () => {
       alert("Gagal mengirim komentar: " + err.message);
     }
   };
+
+  const ctaStyle = {
+    background: "var(--gradient-primary)",
+    color: "var(--on-primary)",
+    padding: "1rem 3rem",
+    borderRadius: "18px",
+    textDecoration: "none",
+    fontWeight: "700",
+    fontSize: "1.15rem",
+    fontFamily: "var(--font-body)",
+    boxShadow: "var(--shadow-primary)",
+    transition:
+      "transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease",
+    cursor: "pointer",
+    display: "inline-block",
+    border: "none",
+  };
+
+  const ctaOutlineStyle = {
+    background: "transparent",
+    color: "#fff",
+    border: "2px solid var(--primary-color)",
+    padding: "1rem 3rem",
+    borderRadius: "18px",
+    textDecoration: "none",
+    fontWeight: "700",
+    fontSize: "1.15rem",
+    fontFamily: "var(--font-body)",
+    transition:
+      "transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.35s ease",
+    cursor: "pointer",
+    display: "inline-block",
+  };
+
   return (
-    <>
+    <div ref={pageRef}>
       {/* Hero Section */}
       <section id="home" className="hero-section">
         {backgroundImages.map((image, index) => (
@@ -106,26 +152,26 @@ const Home = () => {
             alignItems: "center",
             justifyContent: "center",
             flexWrap: "wrap",
-            gap: "4rem",
+            gap: "3rem",
             maxWidth: "1200px",
           }}
         >
           <div
+            className="hero-anim"
             style={{
               flex: "1",
-              minWidth: "300px",
+              minWidth: "280px",
               display: "flex",
               justifyContent: "center",
               position: "relative",
-              animation: "slideInFromLeft 0.8s ease both",
             }}
           >
             <div
               style={{
                 position: "absolute",
-                width: "280px",
-                height: "280px",
-                background: "rgba(0,0,0,0.18)",
+                width: "300px",
+                height: "300px",
+                background: "rgba(249, 115, 22, 0.10)",
                 borderRadius: "50%",
                 zIndex: 0,
                 top: "52%",
@@ -136,40 +182,40 @@ const Home = () => {
             <div
               style={{
                 position: "absolute",
-                width: "350px",
-                height: "350px",
-                background: "linear-gradient(135deg, #1366d6 0%, #0f4bb5 100%)",
+                width: "370px",
+                height: "370px",
+                background: "linear-gradient(135deg, #f97316 0%, #ea580c 100%)",
                 borderRadius: "50%",
                 zIndex: 0,
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                opacity: 0.15,
+                opacity: 0.12,
               }}
             ></div>
             <img
               src="/gatotkaca berdiri.png"
               alt="Gatotkaca"
+              className="hero-float"
               style={{
                 position: "relative",
                 zIndex: 1,
                 maxWidth: "100%",
-                maxHeight: "80vh",
+                maxHeight: "78vh",
                 objectFit: "contain",
-                filter: "drop-shadow(0 8px 24px rgba(15, 85, 170, 0.15))",
+                filter: "drop-shadow(0 18px 40px rgba(0, 0, 0, 0.55))",
               }}
             />
           </div>
           <div
+            className="hero-anim"
             style={{
               flex: "1",
-              minWidth: "300px",
+              minWidth: "280px",
               textAlign: "center",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              animation: "slideInFromRight 0.8s ease both",
-              animationDelay: "0.2s",
             }}
           >
             <img
@@ -178,25 +224,23 @@ const Home = () => {
               style={{
                 maxWidth: "100%",
                 marginBottom: "2rem",
-                borderRadius: "16px",
-                boxShadow: "0 16px 40px rgba(15, 85, 170, 0.12)",
+                borderRadius: "18px",
+                boxShadow: "0 20px 50px rgba(0, 0, 0, 0.5)",
+                border: "1px solid rgba(148, 163, 184, 0.2)",
               }}
             />
             {user ? (
               <Link
                 to="/user"
-                style={{
-                  background: "linear-gradient(135deg, #1366d6, #0f4bb5)",
-                  color: "#fff",
-                  padding: "1rem 4rem",
-                  borderRadius: "20px",
-                  textDecoration: "none",
-                  fontWeight: "bold",
-                  fontSize: "1.2rem",
-                  boxShadow: "0 12px 28px rgba(15, 85, 170, 0.22)",
-                  transition:
-                    "transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease",
-                  cursor: "pointer",
+                style={ctaStyle}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.boxShadow =
+                    "0 16px 36px rgba(249, 115, 22, 0.5)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "var(--shadow-primary)";
                 }}
               >
                 Konsultasi latihan
@@ -212,36 +256,30 @@ const Home = () => {
               >
                 <Link
                   to="/register"
-                  style={{
-                    background: "linear-gradient(135deg, #1366d6, #0f4bb5)",
-                    color: "#fff",
-                    padding: "1rem 3rem",
-                    borderRadius: "20px",
-                    textDecoration: "none",
-                    fontWeight: "bold",
-                    fontSize: "1.2rem",
-                    boxShadow: "0 12px 28px rgba(15, 85, 170, 0.22)",
-                    transition:
-                      "transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease",
-                    cursor: "pointer",
+                  style={ctaStyle}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-4px)";
+                    e.currentTarget.style.boxShadow =
+                      "0 16px 36px rgba(249, 115, 22, 0.5)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = "var(--shadow-primary)";
                   }}
                 >
                   Daftar
                 </Link>
                 <Link
                   to="/login"
-                  style={{
-                    background: "transparent",
-                    color: "#0f4bb5",
-                    border: "2px solid #1366d6",
-                    padding: "1rem 3rem",
-                    borderRadius: "20px",
-                    textDecoration: "none",
-                    fontWeight: "bold",
-                    fontSize: "1.2rem",
-                    transition:
-                      "transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background 0.35s ease",
-                    cursor: "pointer",
+                  style={ctaOutlineStyle}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-4px)";
+                    e.currentTarget.style.background =
+                      "rgba(249, 115, 22, 0.14)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.background = "transparent";
                   }}
                 >
                   Login
@@ -255,26 +293,29 @@ const Home = () => {
       {/* Tentang Kami Section */}
       <section id="tentang-kami" className="tentang-kami-section">
         <div className="container" style={{ maxWidth: "1200px" }}>
-          <h2 className="section-title-dark">TENTANG KAMI</h2>
+          <h2 className="section-title-dark reveal">TENTANG KAMI</h2>
 
           {/* Main About Card */}
           <div
+            className="reveal"
             style={{
-              background: "#ffffff",
+              background: "var(--surface)",
               borderRadius: "28px",
               overflow: "hidden",
-              boxShadow: "0 18px 40px rgba(15, 85, 170, 0.12)",
+              border: "1px solid var(--border)",
+              boxShadow: "var(--shadow-lg)",
               marginBottom: "2.5rem",
             }}
           >
             {/* Gradient Header */}
             <div
               style={{
-                background: "linear-gradient(135deg, #1366d6 0%, #0f4bb5 100%)",
+                background: "var(--gradient-head)",
                 padding: "2.5rem 2rem",
                 textAlign: "center",
                 position: "relative",
                 overflow: "hidden",
+                borderBottom: "3px solid var(--primary-color)",
               }}
             >
               {/* Decorative circles */}
@@ -284,7 +325,7 @@ const Home = () => {
                   width: "200px",
                   height: "200px",
                   borderRadius: "50%",
-                  background: "rgba(255,255,255,0.06)",
+                  background: "rgba(249, 115, 22, 0.08)",
                   top: "-60px",
                   right: "-40px",
                 }}
@@ -295,7 +336,7 @@ const Home = () => {
                   width: "150px",
                   height: "150px",
                   borderRadius: "50%",
-                  background: "rgba(255,255,255,0.04)",
+                  background: "rgba(251, 191, 36, 0.06)",
                   bottom: "-40px",
                   left: "-30px",
                 }}
@@ -303,10 +344,11 @@ const Home = () => {
               <h3
                 style={{
                   color: "#ffffff",
-                  fontSize: "1.9rem",
+                  fontSize: "2rem",
                   margin: 0,
                   fontWeight: "700",
-                  letterSpacing: "1px",
+                  letterSpacing: "2px",
+                  textTransform: "uppercase",
                   position: "relative",
                 }}
               >
@@ -314,16 +356,17 @@ const Home = () => {
               </h3>
               <div
                 style={{
-                  width: "60px",
-                  height: "3px",
-                  background: "rgba(255,255,255,0.4)",
+                  width: "70px",
+                  height: "4px",
+                  background: "var(--gradient-primary)",
                   margin: "0.75rem auto",
                   borderRadius: "2px",
+                  boxShadow: "0 0 12px rgba(249, 115, 22, 0.6)",
                 }}
               />
               <p
                 style={{
-                  color: "rgba(255,255,255,0.9)",
+                  color: "rgba(241, 245, 249, 0.85)",
                   fontSize: "1.05rem",
                   margin: "0.5rem 0 0",
                   fontWeight: "500",
@@ -340,7 +383,7 @@ const Home = () => {
               <div style={{ maxWidth: "850px", margin: "0 auto" }}>
                 <p
                   style={{
-                    color: "#1a365d",
+                    color: "var(--text-secondary)",
                     fontSize: "1.05rem",
                     lineHeight: "1.9",
                     textAlign: "center",
@@ -348,8 +391,9 @@ const Home = () => {
                     fontWeight: "500",
                   }}
                 >
-                  <strong>Gatot Kaca Gym</strong> adalah pusat kebugaran modern
-                  yang berdiri dengan semangat <strong>"Aji Saka"</strong> —
+                  <strong style={{ color: "#fff" }}>Gatot Kaca Gym</strong>{" "}
+                  adalah pusat kebugaran modern yang berdiri dengan semangat{" "}
+                  <strong style={{ color: "#fbbf24" }}>"Aji Saka"</strong> —
                   kekuatan, ketangguhan, dan disiplin — yang terinspirasi dari
                   tokoh pewayangan Gatot Kaca. Kami hadir untuk menjadi mitra
                   perjalanan fitness Anda, membantu setiap anggota mencapai
@@ -370,11 +414,11 @@ const Home = () => {
                     {
                       icon: (
                         <svg
-                          width="32"
-                          height="32"
+                          width="30"
+                          height="30"
                           viewBox="0 0 24 24"
                           fill="none"
-                          stroke="#1366d6"
+                          stroke="#f97316"
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -388,11 +432,11 @@ const Home = () => {
                     {
                       icon: (
                         <svg
-                          width="32"
-                          height="32"
+                          width="30"
+                          height="30"
                           viewBox="0 0 24 24"
                           fill="none"
-                          stroke="#1366d6"
+                          stroke="#f97316"
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -414,11 +458,11 @@ const Home = () => {
                     {
                       icon: (
                         <svg
-                          width="32"
-                          height="32"
+                          width="30"
+                          height="30"
                           viewBox="0 0 24 24"
                           fill="none"
-                          stroke="#1366d6"
+                          stroke="#f97316"
                           strokeWidth="2"
                           strokeLinecap="round"
                           strokeLinejoin="round"
@@ -442,18 +486,21 @@ const Home = () => {
                         maxWidth: "240px",
                         padding: "1.5rem 1rem",
                         borderRadius: "20px",
-                        background: "#f5f9ff",
-                        border: "1px solid rgba(19, 102, 214, 0.1)",
-                        transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                        background: "var(--surface-2)",
+                        border: "1px solid var(--border)",
+                        transition: "all 0.3s ease",
                         cursor: "default",
                       }}
                       onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = "translateY(-4px)";
+                        e.currentTarget.style.transform = "translateY(-6px)";
+                        e.currentTarget.style.borderColor =
+                          "rgba(249, 115, 22, 0.45)";
                         e.currentTarget.style.boxShadow =
-                          "0 12px 28px rgba(15,85,170,0.12)";
+                          "0 14px 32px rgba(0, 0, 0, 0.45)";
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.transform = "translateY(0)";
+                        e.currentTarget.style.borderColor = "var(--border)";
                         e.currentTarget.style.boxShadow = "none";
                       }}
                     >
@@ -462,8 +509,7 @@ const Home = () => {
                           width: "60px",
                           height: "60px",
                           borderRadius: "16px",
-                          background:
-                            "linear-gradient(135deg, #e0edff, #cde0ff)",
+                          background: "rgba(249, 115, 22, 0.12)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -474,17 +520,18 @@ const Home = () => {
                       </div>
                       <h4
                         style={{
-                          color: "#0f3b82",
+                          color: "#f1f5f9",
                           fontSize: "1rem",
                           fontWeight: "700",
                           margin: "0 0 0.35rem",
+                          fontFamily: "var(--font-body)",
                         }}
                       >
                         {item.title}
                       </h4>
                       <p
                         style={{
-                          color: "#5e7caa",
+                          color: "var(--text-secondary)",
                           fontSize: "0.85rem",
                           margin: 0,
                         }}
@@ -497,7 +544,7 @@ const Home = () => {
 
                 <p
                   style={{
-                    color: "#476b9c",
+                    color: "var(--text-secondary)",
                     fontSize: "0.95rem",
                     lineHeight: "1.9",
                     textAlign: "center",
@@ -505,27 +552,27 @@ const Home = () => {
                   }}
                 >
                   Dengan berbagai program latihan yang dirancang khusus — mulai
-                  dari <strong>pembentukan tubuh</strong>,{" "}
-                  <strong>penurunan berat badan</strong>, hingga{" "}
-                  <strong>peningkatan performa atletik</strong> — tim pelatih
-                  profesional kami siap membimbing Anda setiap langkah. Kami
-                  percaya bahwa setiap orang memiliki potensi untuk menjadi
-                  kuat, sehat, dan percaya diri.
+                  dari <strong style={{ color: "#fbbf24" }}>pembentukan tubuh</strong>
+                  , <strong style={{ color: "#fbbf24" }}>penurunan berat badan</strong>,
+                  hingga <strong style={{ color: "#fbbf24" }}>peningkatan performa atletik</strong>{" "}
+                  — tim pelatih profesional kami siap membimbing Anda setiap
+                  langkah. Kami percaya bahwa setiap orang memiliki potensi
+                  untuk menjadi kuat, sehat, dan percaya diri.
                 </p>
 
                 {/* Tagline */}
                 <div
                   style={{
-                    background: "linear-gradient(135deg, #eef5ff, #e0edff)",
+                    background: "var(--surface-2)",
                     borderRadius: "16px",
                     padding: "1.25rem 2rem",
                     textAlign: "center",
-                    border: "1px solid rgba(19, 102, 214, 0.12)",
+                    border: "1px solid rgba(251, 191, 36, 0.3)",
                   }}
                 >
                   <p
                     style={{
-                      color: "#0f3b82",
+                      color: "#f8fafc",
                       fontSize: "1.05rem",
                       fontWeight: "600",
                       margin: 0,
@@ -545,9 +592,10 @@ const Home = () => {
 
           {/* Schedule Section */}
           <h3
+            className="reveal"
             style={{
-              color: "#0f3b82",
-              fontSize: "1.4rem",
+              color: "#f8fafc",
+              fontSize: "1.5rem",
               textAlign: "center",
               fontWeight: "700",
               marginBottom: "1.5rem",
@@ -555,6 +603,8 @@ const Home = () => {
               alignItems: "center",
               justifyContent: "center",
               gap: "0.5rem",
+              textTransform: "uppercase",
+              letterSpacing: "1.5px",
             }}
           >
             <svg
@@ -562,7 +612,7 @@ const Home = () => {
               height="24"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#1366d6"
+              stroke="#f97316"
               strokeWidth="2"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -576,6 +626,7 @@ const Home = () => {
           </h3>
 
           <div
+            className="reveal"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(170px, 1fr))",
@@ -592,21 +643,24 @@ const Home = () => {
               <div
                 key={idx}
                 style={{
-                  background: "linear-gradient(135deg, #f5f9ff, #eef5ff)",
+                  background: "var(--surface)",
                   borderRadius: "20px",
                   padding: "1.5rem 1.25rem",
                   textAlign: "center",
-                  border: "1px solid rgba(15, 75, 181, 0.1)",
-                  transition: "transform 0.3s ease, box-shadow 0.3s ease",
+                  border: "1px solid var(--border)",
+                  transition: "all 0.3s ease",
                   cursor: "default",
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = "translateY(-4px)";
+                  e.currentTarget.style.transform = "translateY(-6px)";
+                  e.currentTarget.style.borderColor =
+                    "rgba(249, 115, 22, 0.45)";
                   e.currentTarget.style.boxShadow =
-                    "0 12px 24px rgba(15,85,170,0.1)";
+                    "0 14px 30px rgba(0, 0, 0, 0.4)";
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.borderColor = "var(--border)";
                   e.currentTarget.style.boxShadow = "none";
                 }}
               >
@@ -615,7 +669,7 @@ const Home = () => {
                   height="28"
                   viewBox="0 0 24 24"
                   fill="none"
-                  stroke="#1366d6"
+                  stroke="#f97316"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
@@ -626,17 +680,20 @@ const Home = () => {
                 </svg>
                 <h4
                   style={{
-                    color: "#0f3b82",
+                    color: "#f1f5f9",
                     fontSize: "0.9rem",
                     fontWeight: "700",
                     margin: "0 0 0.5rem",
+                    fontFamily: "var(--font-body)",
+                    textTransform: "uppercase",
+                    letterSpacing: "1px",
                   }}
                 >
                   {item.hari}
                 </h4>
                 <p
                   style={{
-                    color: "#1366d6",
+                    color: "#fbbf24",
                     fontSize: "1rem",
                     fontWeight: "700",
                     margin: 0,
@@ -647,7 +704,7 @@ const Home = () => {
                 {item.jam2 && (
                   <p
                     style={{
-                      color: "#1366d6",
+                      color: "#fbbf24",
                       fontSize: "1rem",
                       fontWeight: "700",
                       margin: "0.2rem 0 0",
@@ -665,9 +722,9 @@ const Home = () => {
       {/* Fasilitas Section */}
       <section id="fasilitas" className="home-section-light">
         <div className="container" style={{ maxWidth: "1200px" }}>
-          <h2 className="section-title-dark">FASILITAS</h2>
+          <h2 className="section-title-dark reveal">FASILITAS</h2>
           <div className="fasilitas-grid-new">
-            <div className="fasilitas-card-new">
+            <div className="fasilitas-card-new reveal" data-delay="0">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -687,9 +744,9 @@ const Home = () => {
                   d="M12 14v7m-3-3l3 3 3-3"
                 />
               </svg>
-              kamar mandi
+              Kamar Mandi
             </div>
-            <div className="fasilitas-card-new">
+            <div className="fasilitas-card-new reveal" data-delay="0.1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -703,9 +760,9 @@ const Home = () => {
                   d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
                 />
               </svg>
-              Rak barang
+              Rak Barang
             </div>
-            <div className="fasilitas-card-new">
+            <div className="fasilitas-card-new reveal" data-delay="0.2">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -728,85 +785,46 @@ const Home = () => {
       {/* Album Section */}
       <section id="album" className="section-cream">
         <div className="container" style={{ maxWidth: "1200px" }}>
-          <h2 className="section-title-dark">ALBUM</h2>
+          <h2 className="section-title-dark reveal">ALBUM</h2>
           <div className="album-grid-new">
             {albums.length > 0 ? (
               albums.slice(0, 6).map((album) => (
-                <div key={album.id} className="album-item-new">
+                <div key={album.id} className="album-item-new reveal">
                   <img src={album.url} alt="Album" />
                 </div>
               ))
             ) : (
               <>
-                <div className="album-item-new">
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      backgroundImage:
-                        "linear-gradient(to bottom, #cceeff, #99ddff, #80cc28, #66b31a)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <span
+                {[0, 1, 2].map((i) => (
+                  <div key={i} className="album-item-new reveal">
+                    <div
                       style={{
-                        fontSize: "4rem",
-                        color: "#fff",
-                        filter: "drop-shadow(0 5px 5px rgba(0,0,0,0.2))",
+                        width: "100%",
+                        height: "100%",
+                        background:
+                          "linear-gradient(160deg, #232e4d 0%, #141b2e 60%, #0b0f1c 100%)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                       }}
                     >
-                      ☁️
-                    </span>
+                      <svg
+                        width="56"
+                        height="56"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="rgba(249, 115, 22, 0.7)"
+                        strokeWidth="1.6"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                        <circle cx="8.5" cy="8.5" r="1.5" />
+                        <polyline points="21 15 16 10 5 21" />
+                      </svg>
+                    </div>
                   </div>
-                </div>
-                <div className="album-item-new">
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      backgroundImage:
-                        "linear-gradient(to bottom, #cceeff, #99ddff, #80cc28, #66b31a)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: "4rem",
-                        color: "#fff",
-                        filter: "drop-shadow(0 5px 5px rgba(0,0,0,0.2))",
-                      }}
-                    >
-                      ☁️
-                    </span>
-                  </div>
-                </div>
-                <div className="album-item-new">
-                  <div
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      backgroundImage:
-                        "linear-gradient(to bottom, #cceeff, #99ddff, #80cc28, #66b31a)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: "4rem",
-                        color: "#fff",
-                        filter: "drop-shadow(0 5px 5px rgba(0,0,0,0.2))",
-                      }}
-                    >
-                      ☁️
-                    </span>
-                  </div>
-                </div>
+                ))}
               </>
             )}
           </div>
@@ -815,13 +833,16 @@ const Home = () => {
               <Link
                 to="/album"
                 style={{
-                  color: "#000",
+                  color: "#f8fafc",
                   fontSize: "1.2rem",
-                  fontWeight: "bold",
+                  fontWeight: "700",
                   textDecoration: "none",
-                  borderBottom: "2px solid #e6b95b",
+                  borderBottom: "3px solid #fbbf24",
                   paddingBottom: "5px",
+                  transition: "color 0.3s ease",
                 }}
+                onMouseEnter={(e) => (e.target.style.color = "#fbbf24")}
+                onMouseLeave={(e) => (e.target.style.color = "#f8fafc")}
               >
                 Lihat semua album
               </Link>
@@ -834,10 +855,10 @@ const Home = () => {
       {user && (
         <section id="catatan" className="home-section-light">
           <div className="container" style={{ maxWidth: "1200px" }}>
-            <h2 className="section-title-dark">CATATAN</h2>
+            <h2 className="section-title-dark reveal">CATATAN</h2>
             {alreadyCommented ? (
               <div
-                className="catatan-form-container"
+                className="catatan-form-container reveal"
                 style={{ textAlign: "center" }}
               >
                 <div
@@ -845,12 +866,12 @@ const Home = () => {
                     width: "72px",
                     height: "72px",
                     borderRadius: "50%",
-                    background: "linear-gradient(135deg, #f59e0b, #d97706)",
+                    background: "var(--gradient-gold)",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     margin: "0 auto 1.25rem",
-                    boxShadow: "0 8px 24px rgba(245, 158, 11, 0.3)",
+                    boxShadow: "0 8px 24px rgba(245, 158, 11, 0.4)",
                   }}
                 >
                   <svg
@@ -858,7 +879,7 @@ const Home = () => {
                     height="32"
                     viewBox="0 0 24 24"
                     fill="none"
-                    stroke="#fff"
+                    stroke="#111827"
                     strokeWidth="2.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
@@ -870,7 +891,7 @@ const Home = () => {
                 </div>
                 <h3
                   style={{
-                    color: "#92400e",
+                    color: "#fbbf24",
                     fontSize: "1.3rem",
                     marginBottom: "0.5rem",
                   }}
@@ -879,7 +900,7 @@ const Home = () => {
                 </h3>
                 <p
                   style={{
-                    color: "#78350f",
+                    color: "var(--text-secondary)",
                     fontSize: "0.95rem",
                     lineHeight: "1.6",
                     marginBottom: "1.5rem",
@@ -892,15 +913,15 @@ const Home = () => {
                   onClick={() => setAlreadyCommented(false)}
                   style={{
                     padding: "0.75rem 2rem",
-                    background: "linear-gradient(135deg, #1366d6, #0f4bb5)",
-                    color: "#fff",
+                    background: "var(--gradient-primary)",
+                    color: "var(--on-primary)",
                     border: "none",
                     borderRadius: "12px",
-                    fontWeight: 600,
+                    fontWeight: 700,
                     fontSize: "0.95rem",
                     cursor: "pointer",
-                    fontFamily: '"Poppins", sans-serif',
-                    boxShadow: "0 6px 16px rgba(15, 75, 181, 0.2)",
+                    fontFamily: "var(--font-body)",
+                    boxShadow: "var(--shadow-primary)",
                     transition: "transform 0.3s ease",
                   }}
                   onMouseEnter={(e) => {
@@ -915,7 +936,7 @@ const Home = () => {
               </div>
             ) : (
               <form
-                className="catatan-form-container"
+                className="catatan-form-container reveal"
                 onSubmit={handleCommentSubmit}
               >
                 <label className="catatan-label">Email</label>
@@ -974,17 +995,27 @@ const Home = () => {
                   style={{
                     width: "100%",
                     padding: "1rem",
-                    background: "linear-gradient(135deg, #1366d6, #0f4bb5)",
-                    color: "#fff",
+                    background: "var(--gradient-primary)",
+                    color: "var(--on-primary)",
                     border: "none",
-                    borderRadius: "16px",
-                    fontWeight: "bold",
-                    fontSize: "1.1rem",
+                    borderRadius: "14px",
+                    fontWeight: 700,
+                    fontSize: "1.05rem",
+                    fontFamily: "var(--font-body)",
                     cursor: "pointer",
                     marginTop: "1rem",
                     transition:
                       "transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease",
-                    boxShadow: "0 8px 20px rgba(15, 85, 170, 0.18)",
+                    boxShadow: "var(--shadow-primary)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = "translateY(-3px)";
+                    e.currentTarget.style.boxShadow =
+                      "0 12px 30px rgba(249, 115, 22, 0.5)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = "translateY(0)";
+                    e.currentTarget.style.boxShadow = "var(--shadow-primary)";
                   }}
                 >
                   Kirim Komentar
@@ -998,8 +1029,8 @@ const Home = () => {
       {/* Maps / Kontak Section */}
       <section id="maps-kontak" className="home-section-cream">
         <div className="container" style={{ maxWidth: "1200px" }}>
-          <h2 className="section-title-dark">MAPS/KONTAK</h2>
-          <div className="maps-container">
+          <h2 className="section-title-dark reveal">MAPS/KONTAK</h2>
+          <div className="maps-container reveal">
             <iframe
               src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126428.08343387802!2d112.822941!3d-7.6433299!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7c5bc0661e715%3A0x3f5c906809c95213!2sPasuruan%2C%20Pasuruan%20City%2C%20East%20Java!5e0!3m2!1sen!2sid!4v1700000000000!5m2!1sen!2sid"
               className="maps-image"
@@ -1021,14 +1052,15 @@ const Home = () => {
                   style={{
                     background:
                       "linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)",
-                    width: "40px",
-                    height: "40px",
-                    borderRadius: "10px",
+                    width: "44px",
+                    height: "44px",
+                    borderRadius: "12px",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     color: "white",
                     fontSize: "1.5rem",
+                    boxShadow: "0 6px 16px rgba(0, 0, 0, 0.4)",
                   }}
                 >
                   <svg
@@ -1066,14 +1098,15 @@ const Home = () => {
                 <div
                   style={{
                     background: "#25D366",
-                    width: "40px",
-                    height: "40px",
+                    width: "44px",
+                    height: "44px",
                     borderRadius: "50%",
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     color: "white",
                     fontSize: "1.5rem",
+                    boxShadow: "0 6px 16px rgba(0, 0, 0, 0.4)",
                   }}
                 >
                   <svg
@@ -1105,7 +1138,7 @@ const Home = () => {
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 

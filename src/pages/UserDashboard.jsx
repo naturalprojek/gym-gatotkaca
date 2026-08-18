@@ -17,15 +17,15 @@ const UserDashboard = () => {
             style={{
               width: "48px",
               height: "48px",
-              border: "5px solid #eef5ff",
-              borderTop: "5px solid #1366d6",
+              border: "5px solid #232e4d",
+              borderTop: "5px solid #f97316",
               borderRadius: "50%",
               animation: "spin 0.8s linear infinite",
               margin: "0 auto 1rem",
             }}
           />
           <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-          <p style={{ color: "#1366d6", fontWeight: 600 }}>Memuat...</p>
+          <p style={{ color: "#f97316", fontWeight: 600 }}>Memuat...</p>
         </div>
       </div>
     );

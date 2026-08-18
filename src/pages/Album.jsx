@@ -95,7 +95,7 @@ const Album = () => {
       <div
         style={{
           minHeight: "100vh",
-          background: "linear-gradient(180deg, #f8fbff 0%, #eef5ff 100%)",
+          background: "linear-gradient(180deg, #111a30 0%, #0e1424 100%)",
           paddingTop: "100px",
           paddingBottom: "3rem",
         }}
@@ -115,10 +115,10 @@ const Album = () => {
             <Link
               to="/"
               style={{
-                color: "#0f4bb5",
+                color: "#f97316",
                 textDecoration: "none",
                 fontWeight: "bold",
-                borderBottom: "2px solid #1366d6",
+                borderBottom: "2px solid #f97316",
                 transition: "opacity 0.3s ease",
               }}
               onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
@@ -136,7 +136,7 @@ const Album = () => {
                 padding: "2rem",
                 marginBottom: "2rem",
                 borderRadius: "20px",
-                border: "2px dashed rgba(19, 102, 214, 0.3)",
+                border: "2px dashed rgba(249, 115, 22, 0.4)",
                 background: "rgba(255, 255, 255, 0.85)",
                 cursor: uploading ? "not-allowed" : "pointer",
                 transition: "all 0.3s ease",
@@ -149,16 +149,16 @@ const Album = () => {
               }}
               onDragOver={(e) => {
                 e.preventDefault();
-                e.currentTarget.style.borderColor = "#1366d6";
-                e.currentTarget.style.background = "rgba(19, 102, 214, 0.05)";
+                e.currentTarget.style.borderColor = "#f97316";
+                e.currentTarget.style.background = "rgba(249, 115, 22, 0.08)";
               }}
               onDragLeave={(e) => {
-                e.currentTarget.style.borderColor = "rgba(19, 102, 214, 0.3)";
+                e.currentTarget.style.borderColor = "rgba(249, 115, 22, 0.4)";
                 e.currentTarget.style.background = "rgba(255, 255, 255, 0.85)";
               }}
               onDrop={(e) => {
                 e.preventDefault();
-                e.currentTarget.style.borderColor = "rgba(19, 102, 214, 0.3)";
+                e.currentTarget.style.borderColor = "rgba(249, 115, 22, 0.4)";
                 e.currentTarget.style.background = "rgba(255, 255, 255, 0.85)";
                 const file = e.dataTransfer.files[0];
                 if (file && fileInputRef.current) {
@@ -183,15 +183,15 @@ const Album = () => {
                     style={{
                       width: "48px",
                       height: "48px",
-                      border: "4px solid #eef5ff",
-                      borderTop: "4px solid #1366d6",
+                      border: "4px solid #232e4d",
+                      borderTop: "4px solid #f97316",
                       borderRadius: "50%",
                       animation: "spin 0.8s linear infinite",
                       margin: "0 auto 1rem",
                     }}
                   />
                   <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
-                  <p style={{ color: "#1366d6", fontWeight: "600", margin: 0 }}>
+                  <p style={{ color: "#f97316", fontWeight: "600", margin: 0 }}>
                     Mengupload {selectedFileName}...
                   </p>
                 </div>
@@ -202,21 +202,21 @@ const Album = () => {
                       width: "64px",
                       height: "64px",
                       borderRadius: "50%",
-                      background: "linear-gradient(135deg, #1366d6, #0f4bb5)",
+                      background: "linear-gradient(135deg, #f97316, #ea580c)",
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "center",
                       margin: "0 auto 1rem",
                       fontSize: "2rem",
                       color: "#fff",
-                      boxShadow: "0 8px 20px rgba(19, 102, 214, 0.25)",
+                      boxShadow: "0 8px 20px rgba(249, 115, 22, 0.35)",
                     }}
                   >
                     +
                   </div>
                   <p
                     style={{
-                      color: "#0f3b82",
+                      color: "#f1f5f9",
                       fontWeight: "700",
                       fontSize: "1.1rem",
                       marginBottom: "0.5rem",
@@ -224,7 +224,7 @@ const Album = () => {
                   >
                     Tambah Foto Baru
                   </p>
-                  <p style={{ color: "#476b9c", fontSize: "0.9rem", margin: 0 }}>
+                  <p style={{ color: "#94a3b8", fontSize: "0.9rem", margin: 0 }}>
                     Klik atau seret foto ke sini • Maks 10MB
                   </p>
                 </div>
@@ -239,9 +239,9 @@ const Album = () => {
                     placeholder="Judul foto (opsional)"
                     className="form-input"
                     style={{
-                      background: "#eef3ff",
-                      border: "1px solid rgba(15, 85, 170, 0.18)",
-                      color: "#0f2a56",
+                      background: "#1c2642",
+                      border: "1px solid var(--border)",
+                      color: "#e2e8f0",
                       textAlign: "center",
                       borderRadius: "12px",
                     }}
@@ -271,17 +271,17 @@ const Album = () => {
                     borderRadius: "16px",
                     overflow: "hidden",
                     position: "relative",
-                    boxShadow: "0 12px 32px rgba(15, 85, 170, 0.08)",
+                    boxShadow: "0 12px 32px rgba(0, 0, 0, 0.35)",
                     transition: "transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease",
                     cursor: "pointer",
                   }}
                   onMouseEnter={(e) => {
                     e.currentTarget.style.transform = "translateY(-6px)";
-                    e.currentTarget.style.boxShadow = "0 18px 45px rgba(15, 85, 170, 0.12)";
+                    e.currentTarget.style.boxShadow = "0 18px 45px rgba(0, 0, 0, 0.5)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.boxShadow = "0 12px 32px rgba(15, 85, 170, 0.08)";
+                    e.currentTarget.style.boxShadow = "0 12px 32px rgba(0, 0, 0, 0.35)";
                   }}
                 >
                   <img
@@ -362,7 +362,7 @@ const Album = () => {
                   gridColumn: "1 / -1",
                   textAlign: "center",
                   padding: "4rem 2rem",
-                  color: "#476b9c",
+                  color: "#94a3b8",
                 }}
               >
                 <div
@@ -378,7 +378,7 @@ const Album = () => {
                   Belum ada foto di album.
                 </p>
                 {user && user.role === "admin" && (
-                  <p style={{ color: "#5e7caa" }}>
+                  <p style={{ color: "#94a3b8" }}>
                     Klik area upload di atas untuk menambahkan foto
                   </p>
                 )}

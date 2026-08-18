@@ -22,7 +22,7 @@ const AdminMemberModal = ({
         style={{ width: "100%", maxWidth: "480px", position: "relative" }}
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-center" style={{ marginBottom: "1.5rem", color: "#0e3e8f" }}>
+        <h2 className="text-center" style={{ marginBottom: "1.5rem", color: "var(--text-primary)" }}>
           {editingMember ? "Edit Akun" : "Tambah Akun Baru"}
         </h2>
 
@@ -74,7 +74,7 @@ const AdminMemberModal = ({
               onChange={(e) => handleChange("phone", e.target.value)}
               placeholder="Contoh: 08123456789 atau 628123456789"
             />
-            <small style={{ color: '#5e7caa', fontSize: '0.75rem', marginTop: '0.3rem' }}>
+            <small style={{ color: 'var(--text-muted)', fontSize: '0.75rem', marginTop: '0.3rem' }}>
               Otomatis dikonversi ke +62. Cukup ketik nomor HP (boleh pakai 0 depan).
             </small>
           </div>
@@ -113,9 +113,9 @@ const AdminMemberModal = ({
               className="btn"
               style={{
                 flex: 1,
-                background: "#eef3ff",
-                color: "#0f3b82",
-                border: "1px solid rgba(15, 85, 170, 0.18)",
+                background: "var(--surface-2)",
+                color: "var(--text-secondary)",
+                border: "1px solid var(--border)",
               }}
             >
               Batal

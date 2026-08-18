@@ -88,18 +88,18 @@ const getBmiColor = (category) => {
     case 'Berat Badan Kurang': return '#f59e0b';
     case 'Berat Badan Lebih': return '#f97316';
     case 'Obesitas': return '#ef4444';
-    default: return '#0f3b82';
+    default: return '#f97316';
   }
 };
 
-const SectionHeader = ({ icon, title, color = '#1366d6' }) => (
+const SectionHeader = ({ icon, title, color = '#f97316' }) => (
   <div style={{
     display: 'flex',
     alignItems: 'center',
     gap: '0.6rem',
     marginBottom: '1.25rem',
     paddingBottom: '0.75rem',
-    borderBottom: '2px solid rgba(15, 85, 170, 0.08)'
+    borderBottom: '2px solid rgba(148, 163, 184, 0.15)'
   }}>
     <div style={{
       width: '36px',
@@ -114,7 +114,7 @@ const SectionHeader = ({ icon, title, color = '#1366d6' }) => (
     }}>
       {icon}
     </div>
-    <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: '#0f3b82' }}>{title}</h3>
+    <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 700, color: '#f1f5f9' }}>{title}</h3>
   </div>
 );
 
@@ -132,7 +132,7 @@ const ResultCard = ({ result, onReset }) => {
     <div className="animate-fade-in" style={{ animationDelay: '0.1s' }}>
       {/* HEADER PREMIUM */}
       <div style={{
-        background: 'linear-gradient(135deg, #1366d6 0%, #0f4bb5 100%)',
+        background: 'linear-gradient(135deg, #232e4d 0%, #12192c 100%)',
         borderRadius: '20px 20px 0 0',
         padding: '1.75rem 2rem',
         textAlign: 'center',
@@ -173,9 +173,9 @@ const ResultCard = ({ result, onReset }) => {
         background: 'rgba(255, 255, 255, 0.85)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
-        border: '1px solid rgba(15, 85, 170, 0.12)',
+        border: '1px solid var(--border)',
         borderTop: 'none',
-        boxShadow: '0 14px 40px 0 rgba(15, 85, 170, 0.12)',
+        boxShadow: '0 14px 40px 0 rgba(0, 0, 0, 0.4)',
         borderRadius: '0 0 20px 20px',
         padding: '2rem'
       }}>
@@ -205,7 +205,7 @@ const ResultCard = ({ result, onReset }) => {
             </span>
           </div>
           <div style={{ flex: 1 }}>
-            <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#476b9c', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            <div style={{ fontSize: '0.8rem', fontWeight: 600, color: '#94a3b8', marginBottom: '0.25rem', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               BMI & Status Berat Badan
             </div>
             <div style={{ fontSize: '1.5rem', fontWeight: 700, color: bmiColor }}>
@@ -214,7 +214,7 @@ const ResultCard = ({ result, onReset }) => {
             <div style={{
               marginTop: '0.5rem',
               height: '6px',
-              background: 'rgba(15, 85, 170, 0.08)',
+              background: 'rgba(148, 163, 184, 0.14)',
               borderRadius: '3px',
               overflow: 'hidden',
               maxWidth: '300px'
@@ -242,38 +242,38 @@ const ResultCard = ({ result, onReset }) => {
           
           {/* Rekomendasi Program & Gizi */}
           <div style={{
-            background: '#ffffff',
+            background: 'var(--surface-2)',
             borderRadius: '16px',
             padding: '1.5rem',
-            border: '1px solid rgba(15, 85, 170, 0.1)',
-            boxShadow: '0 4px 12px rgba(15, 85, 170, 0.06)'
+            border: '1px solid var(--border)',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
           }}>
             <SectionHeader icon={icons.nutrition} title="Target & Nutrisi" />
 
             <div style={{
-              background: 'linear-gradient(135deg, #eef5ff, #f5f9ff)',
+              background: 'linear-gradient(135deg, #1c2642, #17213a)',
               borderRadius: '10px',
               padding: '0.85rem 1rem',
               marginBottom: '1rem',
-              border: '1px solid rgba(15, 85, 170, 0.08)'
+              border: '1px solid var(--border)'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
                 {icons.fire}
-                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#476b9c', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Program</span>
+                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Program</span>
               </div>
-              <span style={{ fontSize: '1rem', fontWeight: 700, color: '#0f3b82' }}>{program}</span>
+              <span style={{ fontSize: '1rem', fontWeight: 700, color: '#f1f5f9' }}>{program}</span>
             </div>
 
-            <p style={{ fontSize: '0.9rem', color: '#5e7caa', lineHeight: '1.7', margin: '0 0 1rem' }}>
+            <p style={{ fontSize: '0.9rem', color: '#94a3b8', lineHeight: '1.7', margin: '0 0 1rem' }}>
               {description}
             </p>
             
             {kardio && kardio !== '-' && (
               <div style={{
-                background: 'linear-gradient(135deg, #fefce8, #fef9c3)',
+                background: 'linear-gradient(135deg, #3a2f14, #332a12)',
                 borderRadius: '10px',
                 padding: '1rem',
-                border: '1px solid rgba(245, 158, 11, 0.15)',
+                border: '1px solid rgba(245, 158, 11, 0.35)',
                 display: 'flex',
                 gap: '0.75rem',
                 alignItems: 'flex-start'
@@ -287,8 +287,8 @@ const ResultCard = ({ result, onReset }) => {
                   {icons.heart}
                 </div>
                 <div>
-                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#92400e', marginBottom: '0.25rem' }}>ANJURAN KARDIO KHUSUS</div>
-                  <span style={{ fontSize: '0.85rem', color: '#78350f', lineHeight: '1.5' }}>{kardio}</span>
+                  <div style={{ fontSize: '0.75rem', fontWeight: 700, color: '#fbbf24', marginBottom: '0.25rem' }}>ANJURAN KARDIO KHUSUS</div>
+                  <span style={{ fontSize: '0.85rem', color: '#fde68a', lineHeight: '1.5' }}>{kardio}</span>
                 </div>
               </div>
             )}
@@ -296,55 +296,55 @@ const ResultCard = ({ result, onReset }) => {
 
           {/* Karakteristik Latihan Beban */}
           <div style={{
-            background: '#ffffff',
+            background: 'var(--surface-2)',
             borderRadius: '16px',
             padding: '1.5rem',
-            border: '1px solid rgba(15, 85, 170, 0.1)',
-            boxShadow: '0 4px 12px rgba(15, 85, 170, 0.06)'
+            border: '1px solid var(--border)',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
           }}>
             <SectionHeader icon={icons.zap} title="Karakteristik Intensitas Beban" />
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {/* Intensitas */}
               <div style={{
-                background: 'linear-gradient(135deg, #eef5ff, #f5f9ff)',
+                background: 'linear-gradient(135deg, #1c2642, #17213a)',
                 borderRadius: '10px',
                 padding: '1rem',
-                border: '1px solid rgba(15, 85, 170, 0.08)'
+                border: '1px solid var(--border)'
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.3rem' }}>
                   {icons.zap}
-                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0f3b82', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Tingkat Intensitas</span>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#f1f5f9', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Tingkat Intensitas</span>
                 </div>
-                <p style={{ margin: 0, fontSize: '0.9rem', color: '#5e7caa', lineHeight: '1.5' }}>{intensitas}</p>
+                <p style={{ margin: 0, fontSize: '0.9rem', color: '#94a3b8', lineHeight: '1.5' }}>{intensitas}</p>
               </div>
 
               {/* Repetisi */}
               <div style={{
-                background: 'linear-gradient(135deg, #eef5ff, #f5f9ff)',
+                background: 'linear-gradient(135deg, #1c2642, #17213a)',
                 borderRadius: '10px',
                 padding: '1rem',
-                border: '1px solid rgba(15, 85, 170, 0.08)'
+                border: '1px solid var(--border)'
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.3rem' }}>
                   {icons.clock}
-                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0f3b82', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Repetisi & Istirahat</span>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#f1f5f9', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Repetisi & Istirahat</span>
                 </div>
-                <p style={{ margin: 0, fontSize: '0.9rem', color: '#5e7caa', lineHeight: '1.5' }}>{repetisi}</p>
+                <p style={{ margin: 0, fontSize: '0.9rem', color: '#94a3b8', lineHeight: '1.5' }}>{repetisi}</p>
               </div>
 
               {/* Metode Eksekusi */}
               <div style={{
-                background: 'linear-gradient(135deg, #eef5ff, #f5f9ff)',
+                background: 'linear-gradient(135deg, #1c2642, #17213a)',
                 borderRadius: '10px',
                 padding: '1rem',
-                border: '1px solid rgba(15, 85, 170, 0.08)'
+                border: '1px solid var(--border)'
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.3rem' }}>
                   {icons.fire}
-                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0f3b82', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Metode Eksekusi</span>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#f1f5f9', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Metode Eksekusi</span>
                 </div>
-                <p style={{ margin: 0, fontSize: '0.9rem', color: '#5e7caa', lineHeight: '1.5' }}>{karakteristik}</p>
+                <p style={{ margin: 0, fontSize: '0.9rem', color: '#94a3b8', lineHeight: '1.5' }}>{karakteristik}</p>
               </div>
             </div>
           </div>
@@ -352,16 +352,16 @@ const ResultCard = ({ result, onReset }) => {
 
         {/* ===== JADWAL ROTASI ===== */}
         <div style={{
-          background: '#ffffff',
+          background: 'var(--surface-2)',
           borderRadius: '16px',
           padding: '1.5rem',
-          border: '1px solid rgba(15, 85, 170, 0.1)',
-          boxShadow: '0 4px 12px rgba(15, 85, 170, 0.06)',
+          border: '1px solid var(--border)',
+          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
           marginBottom: '1.5rem'
         }}>
           <SectionHeader icon={icons.schedule} title={`Jadwal Harian (${split})`} />
 
-          <p style={{ fontSize: '0.85rem', color: '#5e7caa', lineHeight: '1.6', marginBottom: '1.5rem', textAlign: 'center' }}>
+          <p style={{ fontSize: '0.85rem', color: '#94a3b8', lineHeight: '1.6', marginBottom: '1.5rem', textAlign: 'center' }}>
             {details}
           </p>
 
@@ -373,18 +373,18 @@ const ResultCard = ({ result, onReset }) => {
           }}>
             {dailySchedule && dailySchedule.map((dayItem, idx) => (
               <div key={idx} style={{
-                background: '#f8fbff',
+                background: 'var(--surface-2)',
                 borderRadius: '14px',
                 overflow: 'hidden',
-                border: '1px solid rgba(15, 85, 170, 0.1)',
+                border: '1px solid var(--border)',
                 transition: 'transform 0.3s ease, box-shadow 0.3s ease'
               }}
-                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = '0 8px 24px rgba(15,85,170,0.12)'; }}
+                onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-4px)';                            e.currentTarget.style.boxShadow = '0 8px 24px rgba(0,0,0,0.4)'; }}
                 onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}
               >
                 {/* Header hari */}
                 <div style={{
-                  background: 'linear-gradient(135deg, #1366d6, #0f4bb5)',
+                  background: 'linear-gradient(135deg, #232e4d, #12192c)',
                   padding: '0.85rem 1rem',
                   display: 'flex',
                   justifyContent: 'space-between',
@@ -418,33 +418,33 @@ const ResultCard = ({ result, onReset }) => {
                         <th style={{
                           textAlign: 'left',
                           padding: '0.4rem 0.5rem',
-                          color: '#476b9c',
+                          color: '#94a3b8',
                           fontWeight: 600,
                           fontSize: '0.7rem',
                           textTransform: 'uppercase',
                           letterSpacing: '0.5px',
-                          borderBottom: '1px solid rgba(15, 85, 170, 0.08)',
+                          borderBottom: '1px solid rgba(148, 163, 184, 0.14)',
                           width: '30px'
                         }}>No</th>
                         <th style={{
                           textAlign: 'left',
                           padding: '0.4rem 0.5rem',
-                          color: '#476b9c',
+                          color: '#94a3b8',
                           fontWeight: 600,
                           fontSize: '0.7rem',
                           textTransform: 'uppercase',
                           letterSpacing: '0.5px',
-                          borderBottom: '1px solid rgba(15, 85, 170, 0.08)'
+                          borderBottom: '1px solid rgba(148, 163, 184, 0.14)'
                         }}>Latihan</th>
                         <th style={{
                           textAlign: 'center',
                           padding: '0.4rem 0.5rem',
-                          color: '#476b9c',
+                          color: '#94a3b8',
                           fontWeight: 600,
                           fontSize: '0.7rem',
                           textTransform: 'uppercase',
                           letterSpacing: '0.5px',
-                          borderBottom: '1px solid rgba(15, 85, 170, 0.08)',
+                          borderBottom: '1px solid rgba(148, 163, 184, 0.14)',
                           width: '80px'
                         }}>Set/Rep</th>
                       </tr>
@@ -456,28 +456,28 @@ const ResultCard = ({ result, onReset }) => {
                           <tr key={eIdx}>
                             <td style={{
                               padding: '0.5rem 0.5rem',
-                              color: '#476b9c',
+                              color: '#94a3b8',
                               fontWeight: 500,
-                              borderBottom: '1px solid rgba(15, 85, 170, 0.05)',
+                              borderBottom: '1px solid rgba(148, 163, 184, 0.08)',
                               verticalAlign: 'top'
                             }}>
                               {eIdx + 1}
                             </td>
                             <td style={{
                               padding: '0.5rem 0.5rem',
-                              color: '#0f2a56',
+                              color: '#e2e8f0',
                               fontWeight: 500,
-                              borderBottom: '1px solid rgba(15, 85, 170, 0.05)',
+                              borderBottom: '1px solid rgba(148, 163, 184, 0.08)',
                               verticalAlign: 'top'
                             }}>
                               {parsed.name}
                             </td>
                             <td style={{
                               padding: '0.5rem 0.5rem',
-                              color: '#1366d6',
+                              color: '#f97316',
                               fontWeight: 600,
                               textAlign: 'center',
-                              borderBottom: '1px solid rgba(15, 85, 170, 0.05)',
+                              borderBottom: '1px solid rgba(148, 163, 184, 0.08)',
                               verticalAlign: 'top',
                               fontSize: '0.75rem'
                             }}>
@@ -500,16 +500,16 @@ const ResultCard = ({ result, onReset }) => {
           style={{
             width: '100%',
             padding: '1rem',
-            background: 'linear-gradient(135deg, #1366d6 0%, #0f4bb5 100%)',
-            color: '#fff',
+            background: 'var(--gradient-primary)',
+            color: 'var(--on-primary)',
             border: 'none',
             borderRadius: '14px',
             fontWeight: 700,
             fontSize: '1rem',
             letterSpacing: '1.5px',
             cursor: 'pointer',
-            fontFamily: '"Poppins", sans-serif',
-            boxShadow: '0 8px 24px rgba(15, 75, 181, 0.3)',
+            fontFamily: 'var(--font-body)',
+            boxShadow: '0 8px 24px rgba(249, 115, 22, 0.3)',
             transition: 'all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)',
             display: 'flex',
             alignItems: 'center',
@@ -518,11 +518,11 @@ const ResultCard = ({ result, onReset }) => {
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.transform = 'translateY(-3px)';
-            e.currentTarget.style.boxShadow = '0 12px 32px rgba(15, 75, 181, 0.4)';
+            e.currentTarget.style.boxShadow = '0 12px 32px rgba(249, 115, 22, 0.4)';
           }}
           onMouseLeave={(e) => {
             e.currentTarget.style.transform = 'translateY(0)';
-            e.currentTarget.style.boxShadow = '0 8px 24px rgba(15, 75, 181, 0.3)';
+            e.currentTarget.style.boxShadow = '0 8px 24px rgba(249, 115, 22, 0.3)';
           }}
         >
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">

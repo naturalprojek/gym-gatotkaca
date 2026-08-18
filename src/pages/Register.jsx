@@ -87,7 +87,7 @@ const Register = () => {
               onChange={handleChange}
               placeholder="Contoh: 08123456789 atau 628123456789"
             />
-            <small style={{ color: '#5e7caa', fontSize: '0.75rem', marginTop: '0.3rem' }}>
+            <small style={{ color: 'var(--text-muted)', fontSize: '0.75rem', marginTop: '0.3rem' }}>
               Otomatis dikonversi ke +62. Cukup ketik nomor HP Anda (boleh pakai 0 depan).
             </small>
           </div>
